@@ -13,22 +13,32 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import team7.example.ToyProject3.domain.Role;
 import team7.example.ToyProject3.domain.User;
+import team7.example.ToyProject3.domain.UserAdaptor;
 import team7.example.ToyProject3.dto.UserDto;
 import team7.example.ToyProject3.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
 @AllArgsConstructor
-
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+
+    public Map<String,String> validateHandling(Errors errors){
+        Map<String,String> vaildResult = new HashMap<>();
+
+        for(FieldError error : errors.getFieldErrors()){
+            String vaildKeyName = String.format("vaild_%s",error.getField());
+            vaildResult.put(vaildKeyName, error.getDefaultMessage());
+        }
+        return vaildResult;
+    }
 
     @Transactional
     public Long joinUser(UserDto userDto){
@@ -50,8 +60,9 @@ public class UserService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
         } else {
             authorities.add(new SimpleGrantedAuthority(Role.USER.getValue()));
-
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+
+        return new UserAdaptor(user,authorities);
+//        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<style>
+    .row {
+        margin-top: 50px;
+    }
+    .ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .button {
+        background-color: white;
+        border: transparent;
+    }
+    .button:hover > .title{
+        text-decoration: underline;
+    }
+    .title {
+        font-weight: bold;
+        font-size: 20px;
+        text-decoration: none;
+    }
+
+</style>
+<body>
+<div th:replace="~{/layout/header :: copy}"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2">
+            <h3 class="my-4 text-center">Category</h3>
+            <div class="list-group mb-4">
+                <a href="/board?boardType=sprout" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 새싹 게시판</a>
+                <a href="/board?boardType=great" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 우수 게시판</a>
+                <a href="/boardForm" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 글쓰기</a>
+            </div>
+        </div>
+        <div class="col-lg-10">
+            <div class="row row-cols-3 " >
+                <button class="button" th:each="board : ${boardList}" th:onclick="|location.href='@{/board/}' + ${board.boardId}|">
+                    <img th:src="${board.thumbnail}" height="200px" width="290px">
+                    <div th:text="${board.boardId}">id</div>
+                    <div class="title" th:text="${board.title}">title</div>
+                    <div class="ellipsis" th:utext="${board.content}"></div>
+                    <div th:text="${board.nickName}">nickname</div>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div th:each="page : ${totalPage}">
+        <a th:if="${param.search != null}" th:href="@{/board(search=${param.search}, page=${page})}" th:text="${page+1}"></a>
+        <a th:unless="${param.search}" th:href="@{/board(page=${page})}" th:text="${page+1}"></a>
+    </div>
+    <form method="get" action="/board">
+        <input type="text" name="search">
+        <button>검색</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="~{/layout/header :: copy}"></div>
+<div class="container">
+    <div th:text="${board.boardId}"></div>
+    <div th:text="${board.title}"></div>
+    <div th:utext="${board.content}"></div>
+    <div th:text="${board.nickName}"></div>
+    <button th:onclick="|location.href='@{/board/delete/}' + ${board.boardId}|">삭제하기</button>
+    <button th:onclick="|location.href='@{/board/updateForm/}' + ${board.boardId}|">수정하기</button>
+</div>
+</body>

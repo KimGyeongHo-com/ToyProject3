@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team7.example.ToyProject3.domain.Board;
 import team7.example.ToyProject3.domain.BoardType;
-import team7.example.ToyProject3.domain.Member;
+import team7.example.ToyProject3.domain.User;
 import team7.example.ToyProject3.dto.board.BoardRequest;
 import team7.example.ToyProject3.dto.board.BoardResponse;
 import team7.example.ToyProject3.repository.BoardRepository;
@@ -20,8 +20,8 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public void savaBoard(BoardRequest.saveBoardDTO saveBoardDTO, Member member) {
-        Board board = saveBoardDTO.toEntity(member);
+    public void savaBoard(BoardRequest.saveBoardDTO saveBoardDTO, User user) {
+        Board board = saveBoardDTO.toEntity(user);
         boardRepository.save(board);
     }
 
@@ -36,7 +36,7 @@ public class BoardService {
                 .thumbnail(board.getThumbnail())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .nickName(board.getMember().getNickName())
+                .nickName(board.getUser().getNickname())
                 .build());
     }
 
@@ -47,7 +47,7 @@ public class BoardService {
                 .boardId(board.getId())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .nickName(board.getMember().getNickName())
+                .nickName(board.getUser().getNickname())
                 .build()).orElse(null);
     }
 

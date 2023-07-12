@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import team7.example.ToyProject3.domain.Member;
 import team7.example.ToyProject3.dto.board.BoardRequest;
 import team7.example.ToyProject3.dto.board.BoardResponse;
-import team7.example.ToyProject3.repository.MemberRepository;
+import team7.example.ToyProject3.repository.UserRepository;
 import team7.example.ToyProject3.service.BoardService;
 
 import java.util.UUID;
@@ -27,12 +26,13 @@ import java.util.stream.IntStream;
 public class BoardController {
 
     private final BoardService boardService;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     @PostMapping("/board/save")
     public String save(
-            BoardRequest.saveBoardDTO saveBoardDTO)
-//            Member member) {
+            BoardRequest.saveBoardDTO saveBoardDTO
+//            @AuthenticationPrincipal MyUserDetails myUserDetails
+    )
     {
         // TODO 23.07.11 변경 필요
         String content = saveBoardDTO.getContent();
@@ -44,19 +44,11 @@ public class BoardController {
             String uniqueFileName = UUID.randomUUID() + fileName;
             saveBoardDTO.setThumbnail(fileData);
         }
-
-        Member member = Member.builder()
-                .email("sssar@naver.com")
-                .nickName("jeep")
-                .build();
-        memberRepository.save(member);
-
-        boardService.savaBoard(saveBoardDTO, member);
-
+//        boardService.savaBoard(saveBoardDTO, myUserDetails.getUser());
         return "redirect:/board";
     }
 
-    @GetMapping({"/", "/board"})
+    @GetMapping( "/board")
     public String boardList(
             @RequestParam(defaultValue = "sprout") String boardType,
             @RequestParam(defaultValue = "") String search,

@@ -25,7 +25,8 @@ public class Board {
     @Lob
     private String thumbnail;
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    @JoinColumn(name = "user_id")
+    private User user;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BoardType boardType;

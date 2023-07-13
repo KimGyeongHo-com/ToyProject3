@@ -1,23 +1,20 @@
 package team7.example.ToyProject3.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import team7.example.ToyProject3.domain.UserAdaptor;
 import team7.example.ToyProject3.dto.board.BoardRequest;
 import team7.example.ToyProject3.dto.board.BoardResponse;
-import team7.example.ToyProject3.repository.UserRepository;
 import team7.example.ToyProject3.service.BoardService;
 
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -26,27 +23,6 @@ import java.util.stream.IntStream;
 public class BoardController {
 
     private final BoardService boardService;
-    private final UserRepository userRepository;
-
-    @PostMapping("/board/save")
-    public String save(
-            BoardRequest.saveBoardDTO saveBoardDTO
-//            @AuthenticationPrincipal MyUserDetails myUserDetails
-    )
-    {
-        // TODO 23.07.11 변경 필요
-        String content = saveBoardDTO.getContent();
-        Document document = Jsoup.parse(content);
-        Elements elements = document.select("img");
-        for (Element element : elements) {
-            String fileData = element.attr("src");
-            String fileName = element.attr("data-filename");
-            String uniqueFileName = UUID.randomUUID() + fileName;
-            saveBoardDTO.setThumbnail(fileData);
-        }
-//        boardService.savaBoard(saveBoardDTO, myUserDetails.getUser());
-        return "redirect:/board";
-    }
 
     @GetMapping( "/board")
     public String boardList(
@@ -56,14 +32,23 @@ public class BoardController {
             Model model
     ) {
         Page<BoardResponse.BoardListDTO> boardList = boardService.findAll(boardType, search, page);
-        model.addAttribute("boardList", boardList);
+        model.addAttribute("boards", boardList);
+        System.out.println(boardList.getPageable().first());
         model.addAttribute("totalPage", IntStream
-                .range(0, boardList.getTotalPages())
+                .range(Math.min(0, Math.abs(page - 5)), Math.min(boardList.getTotalPages(), Math.min(0, Math.abs(page - 5)) + 10))
                 .boxed()
                 .collect(Collectors.toList())
         );
-
         return "/board/boardList";
+    }
+
+    @PostMapping("/board/save")
+    public String save(
+            BoardRequest.saveBoardDTO saveBoardDTO,
+            @AuthenticationPrincipal UserAdaptor userAdaptor
+    ) {
+        boardService.savaBoard(saveBoardDTO, userAdaptor.getUser());
+        return "redirect:/board";
     }
 
     @GetMapping("/board/{boardId}")
@@ -78,18 +63,20 @@ public class BoardController {
 
     @GetMapping("/board/delete/{boardId}")
     public String delete(
-            @PathVariable Long boardId
+            @PathVariable Long boardId,
+            @AuthenticationPrincipal UserAdaptor userAdaptor
     ) {
-        boardService.deleteBoard(boardId);
+        boardService.deleteBoard(boardId, userAdaptor.getUser());
         return "redirect:/board";
     }
 
     @GetMapping("/board/updateForm/{boardId}")
     public String updateForm(
             @PathVariable Long boardId,
+            @AuthenticationPrincipal UserAdaptor userAdaptor,
             Model model
     ) {
-        BoardResponse.BoardUpdateDTO board = boardService.findByIdBoard(boardId);
+        BoardResponse.BoardUpdateDTO board = boardService.updateBoardForm(boardId, userAdaptor.getUser());
         model.addAttribute("board", board);
         return "/board/updateForm";
     }

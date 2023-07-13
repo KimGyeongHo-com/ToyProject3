@@ -2,10 +2,8 @@ package team7.example.ToyProject3.dto.board;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import team7.example.ToyProject3.domain.Board;
 import team7.example.ToyProject3.domain.BoardType;
-import team7.example.ToyProject3.domain.Member;
 import team7.example.ToyProject3.domain.User;
 
 import javax.validation.constraints.NotEmpty;
@@ -16,12 +14,9 @@ public class BoardRequest {
         return false ? BoardType.SPROUT : BoardType.GREAT;
     }
 
-
-    @ToString
-    @Setter
     @Getter
+    @Setter
     public static class saveBoardDTO {
-
         @NotEmpty
         private String title;
         @NotEmpty
@@ -37,12 +32,10 @@ public class BoardRequest {
                     .user(user)
                     .build();
         }
-
-
     }
 
-    @Setter
     @Getter
+    @Setter
     public static class updateBoardDTO {
         @NotEmpty
         private String title;

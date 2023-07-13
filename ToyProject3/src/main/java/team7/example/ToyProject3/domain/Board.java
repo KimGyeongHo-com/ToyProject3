@@ -6,6 +6,7 @@ import team7.example.ToyProject3.dto.board.BoardRequest;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -18,17 +19,26 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String title;
+
     @Lob
     private String content;
+
     @Lob
     private String thumbnail;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BoardType boardType;
+
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
+    private List<Reply> replies;
 
     private Timestamp createdAt;
     private Timestamp updateAt;

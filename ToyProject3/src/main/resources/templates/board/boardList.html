@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 </head>
 <style>
     .row {
@@ -26,23 +28,58 @@
         font-size: 20px;
         text-decoration: none;
     }
+    .search {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .paging {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .paging > .item {
+        margin: 0 5px;
+        list-style-type: none;
+        display: inline-block;
+    }
 
 </style>
+<script>
+    function getBoard(url) {
+        console.log("hi");
+        $.ajax({
+            url: url,
+            type: "GET",
+        })
+            .done(function (fragment) {
+                console.log(fragment);
+                $('#testboard').replaceWith(fragment);
+            })
+    }
+    function getPageBoard(page) {
+        console.log(page);
+        const url = '/board?page=' + page;
+        getBoard(url);
+    }
+</script>
 <body>
 <div th:replace="~{/layout/header :: copy}"></div>
-<div class="container">
+<div class="container" id="testboard">
     <div class="row">
         <div class="col-lg-2">
             <h3 class="my-4 text-center">Category</h3>
             <div class="list-group mb-4">
-                <a href="/board?boardType=sprout" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 새싹 게시판</a>
-                <a href="/board?boardType=great" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 우수 게시판</a>
-                <a href="/boardForm" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 글쓰기</a>
+                <button onclick="getBoard('/board?boardType=sprout')" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 새싹 게시판</button>
+                <button onclick="getBoard('/board?boardType=great')" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 우수 게시판</button>
+                <a th:if="${#authorization.expr('isAuthenticated()')}" href="/boardForm" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 글쓰기</a>
             </div>
         </div>
-        <div class="col-lg-10">
+        <div class="col-lg-10" >
             <div class="row row-cols-3 " >
-                <button class="button" th:each="board : ${boardList}" th:onclick="|location.href='@{/board/}' + ${board.boardId}|">
+                <button class="button" th:each="board : ${boards}" th:onclick="|location.href='@{/board/}' + ${board.boardId}|">
                     <img th:src="${board.thumbnail}" height="200px" width="290px">
                     <div th:text="${board.boardId}">id</div>
                     <div class="title" th:text="${board.title}">title</div>
@@ -50,16 +87,13 @@
                     <div th:text="${board.nickName}">nickname</div>
                 </button>
             </div>
-        </div>
-    </div>
-    <div th:each="page : ${totalPage}">
-        <a th:if="${param.search != null}" th:href="@{/board(search=${param.search}, page=${page})}" th:text="${page+1}"></a>
-        <a th:unless="${param.search}" th:href="@{/board(page=${page})}" th:text="${page+1}"></a>
-    </div>
-    <form method="get" action="/board">
-        <input type="text" name="search">
-        <button>검색</button>
-    </form>
-</div>
-</body>
-</html>
+
+            <ul class="paging">
+                <li class="item" th:each="page : ${totalPage}">
+                    <a th:if="${param.search != null}" th:href="@{/board(search=${param.search}, page=${page})}" th:text="${page+1}">1</a>
+                    <button th:if="${param.search == null}" th:onclick="'getPageBoard(' + ${page} + ')'" th:text="${page+1}"></button>
+                </li>
+            </ul>
+            <form class="search" method="get" action="/board">
+                <input type="text" name="search">
+                <button>검색</button>

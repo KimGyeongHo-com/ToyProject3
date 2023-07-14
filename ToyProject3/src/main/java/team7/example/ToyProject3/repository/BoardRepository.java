@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import team7.example.ToyProject3.domain.Board;
 import team7.example.ToyProject3.domain.BoardType;
-
 import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {

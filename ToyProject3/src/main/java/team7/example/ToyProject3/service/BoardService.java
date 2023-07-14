@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import team7.example.ToyProject3.domain.Board;
 import team7.example.ToyProject3.domain.BoardType;
 import team7.example.ToyProject3.domain.User;
-import team7.example.ToyProject3.domain.UserAdaptor;
 import team7.example.ToyProject3.dto.board.BoardRequest;
 import team7.example.ToyProject3.dto.board.BoardResponse;
 import team7.example.ToyProject3.repository.BoardRepository;
 import team7.example.ToyProject3.util.BoardContentParseUtil;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -50,6 +50,7 @@ public class BoardService {
             .title(board.getTitle())
             .content(board.getContent())
             .nickName(board.getUser().getNickname())
+
             .build()).orElse(null);
     }
 

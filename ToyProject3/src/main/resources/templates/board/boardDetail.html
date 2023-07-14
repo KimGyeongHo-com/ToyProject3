@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Reply List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 <div th:replace="~{/layout/header :: copy}"></div>
@@ -14,54 +15,85 @@
     <div th:text="${board.nickName}"></div>
     <button th:onclick="|location.href='@{/board/delete/}' + ${board.boardId}|">삭제하기</button>
     <button th:onclick="|location.href='@{/board/updateForm/}' + ${board.boardId}|">수정하기</button>
-</div>
-<div class="col-lg-10">
-    <button class="button" th:each="board : ${boardList}" th:onclick="|location.href='@{/board/}' + ${board.boardId}|">
-        <img th:src="${board.thumbnail}" height="200px" width="290px">
-        <div th:text="${board.boardId}">id</div>
-        <div class="title" th:text="${board.title}">title</div>
-        <div class="ellipsis" th:utext="${board.content}"></div>
-        <div th:text="${board.nickName}">nickname</div>
-    </button>
-</div>
 
-<div class="card">
-    <form method="post" action="/{boardId}/reply">
-<!--        <input type="hidden" id="userId" th:value="${board.user.id}" />-->
-<!--        <input type="hidden" id="boardId" th:value="${board.id}" />-->
-        <div class="card-body">
-            <textarea id="reply-content" class="form-control" rows="1"></textarea>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>댓글 작성</h3>
+            <form method="post" id="parentReplyForm" th:action="@{/board/{boardId}/reply(boardId=${board.boardId})}">
+                <div class="mb-3">
+                    <textarea name="content" class="form-control" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">댓글 작성</button>
+            </form>
         </div>
-        <div class="card-footer">
-            <button type="button" id="btn-reply-save" class="btn btn-primary">등록</button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>댓글 목록</h3>
+            <ul id="replyList">
+                <li th:each="reply : ${replyList}">
+                    <span th:text="${reply.content}"></span>
+                    <a th:href="@{/board/{boardId}/reply/{replyId}/(boardId=${board.boardId}, replyId=${reply.id})}"
+                       class="btn btn-danger">삭제</a>
+                    <div class="col-md-12">
+                        <ul>
+                            <li th:each="child : ${reply.children}">
+                                <span th:text="${child.content}"></span>
+                            </li>
+                        </ul>
+                        <form method="post" class="childReplyForm" th:action="@{/board/{boardId}/reply/{parentReplyId}(boardId=${board.boardId}, parentReplyId=${reply.id})}">
+                            <div class="mb-3">
+                                <textarea name="content" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">댓글 작성</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
         </div>
-    </form>
+    </div>
 </div>
 
+<script>
+    $(document).ready(() => {
+        $('#parentReplyForm').submit((e) => {
+            e.preventDefault();
+            const form = $(e.target);
+            const url = form.attr('action');
+            const data = form.serialize();
+            $.post(url, data, (response) => {
+                const replyList = $(response).find('#replyList').html();
+                $('#replyList').html(replyList);
+            });
+        });
 
-<div class="col-lg-10">
-    <div class="card-header">댓글 목록</div>
-    <ul id="reply-box" class="list-group">
-        <li th:each="reply : ${board.replies}" th:id="'reply-' + ${reply.id}"
-            class="list-group-item d-flex justify-content-between">
-            <div th:text="${reply.content}"></div>
-            <div class="d-flex">
-                <div class="font-italic">작성자: <span th:text="${reply.user.username}"></span></div>
-                <button th:if="${reply.user.id eq principal.user.id}"
-                        th:onclick="'index.replyDelete(' + ${board.id} + ', ' + ${reply.id} + ')'" class="badge">삭제
-                </button>
-            </div>
-        <li th:each="childReply : ${reply.childReplies}" th:id="'reply-' + ${childReply.id}"
-            class="list-group-item d-flex justify-content-between">
-            <div th:text="${childReply.content}"></div>
-            <div class="d-flex">
-                <div class="font-italic">작성자: <span th:text="${childReply.user.username}"></span></div>
-                <button th:if="${childReply.user.id eq principal.user.id}"
-                        th:onclick="'index.replyDelete(' + ${board.id} + ', ' + ${childReply.id} + ')'" class="badge">삭제
-                </button>
-            </div>
-        </li>
-        </li>
-    </ul>
-</div>
+        $('#replyList').on('submit', '.childReplyForm', (e) => {
+            e.preventDefault();
+            const form = $(e.target);
+            const url = form.attr('action');
+            const data = form.serialize();
+            $.post(url, data, (response) => {
+                const replyList = $(response).find('#replyList').html();
+                $('#replyList').html(replyList);
+            });
+        });
+
+        $('#replyList').on('click', '.btn-danger', (e) => {
+            e.preventDefault();
+            const link = $(e.target);
+            const url = link.attr('href');
+            $.ajax({
+                url,
+                type: 'GET',
+                success: (response) => {
+                    const replyList = $(response).find('#replyList').html();
+                    $('#replyList').html(replyList);
+                }
+            });
+        });
+    });
+</script>
+
 </body>
+</html>

@@ -37,9 +37,6 @@ public class Board {
     @Column(nullable = false)
     private BoardType boardType;
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
-    private List<Reply> replies;
-
     private Timestamp createdAt;
     private Timestamp updateAt;
 

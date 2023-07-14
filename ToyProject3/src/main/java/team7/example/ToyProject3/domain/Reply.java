@@ -5,11 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import lombok.*;
-
 import javax.persistence.*;
-
 import org.hibernate.annotations.UpdateTimestamp;
-
 
 @ToString
 @Builder
@@ -52,7 +49,10 @@ public class Reply {
 	private Date updatedAt;
 
 	public void addChildReply(Reply reply) {
-		reply.setParentReply(this);
-		this.childReplies.add(reply);
+		if (reply.getParentReply() != this) {
+			reply.setParentReply(this);
+			this.childReplies.add(reply);
+		}
 	}
+
 }

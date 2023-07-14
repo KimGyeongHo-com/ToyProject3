@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import team7.example.ToyProject3.domain.Reply;
 import team7.example.ToyProject3.domain.UserAdaptor;
 import team7.example.ToyProject3.dto.board.BoardRequest;
 import team7.example.ToyProject3.dto.board.BoardResponse;
+import team7.example.ToyProject3.dto.reply.ReplyResponseDto;
 import team7.example.ToyProject3.service.BoardService;
 import team7.example.ToyProject3.service.ReplyService;
 
@@ -62,12 +62,11 @@ public class BoardController {
         Model model
     ) {
         BoardResponse.BoardDetailDTO board = boardService.getDetailBoard(boardId);
-        List<Reply> childReplies = replyService.getChildReplies(boardId);
-        model.addAttribute("childReplies", childReplies);
+        List<ReplyResponseDto> replyList = replyService.getAllReplyByBoard(boardId);
         model.addAttribute("board", board);
+        model.addAttribute("replyList", replyList);
         return "/board/boardDetail";
     }
-
 
     @GetMapping("/board/delete/{boardId}")
     public String delete(

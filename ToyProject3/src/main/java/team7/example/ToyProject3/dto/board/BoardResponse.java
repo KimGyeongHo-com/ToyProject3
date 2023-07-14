@@ -1,11 +1,8 @@
 package team7.example.ToyProject3.dto.board;
 
-import java.util.List;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import team7.example.ToyProject3.domain.Reply;
 
 public class BoardResponse {
 
@@ -27,9 +24,6 @@ public class BoardResponse {
         private String title;
         private String content;
         private String nickName;
-        // TODO 댓글 추가 필요
-        private List<Reply> replies;
-        private List<Reply> childReplies;
     }
 
     @Getter

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team7.example.ToyProject3.repository.AdminRepImpl">
+
+    <select id="getAllUsers" resultType="team7.example.ToyProject3.domain">
+        SELECT * FROM user
+    </select>
+
+    <update id="updateRoleById">
+        UPDATE user SET role = #{role} WHERE id = #{id}
+    </update>
+
+    <select id="findBoardSizeByUserId" resultType="Integer">
+        select count(id) from board WHERE user_id = #{id}
+    </select>
+
+    <select id="findBoardById" resultType="team7.example.ToyProject3.domain.Board">
+        select * from board WHERE id = #{id}
+    </select>
+
+    <delete id="deleteBoardById">
+        DELETE FROM board WHERE id = #{id}
+    </delete>
+
+</mapper>

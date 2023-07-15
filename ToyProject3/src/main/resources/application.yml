@@ -20,7 +20,7 @@ spring:
         show_sql: true
         default_batch_fetch_size: 100
 mybatis:
-  type-aliases-package: team7.example.ToyProject3.dto
+  type-aliases-package: team7.example.ToyProject3.domain
   mapper-locations: classpath:mapper/**/*.xml
   configuration:
     map-underscore-to-camel-case: true

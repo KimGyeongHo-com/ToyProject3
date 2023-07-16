@@ -19,12 +19,12 @@
             <td th:text="${user.name}"></td>
             <td th:text="${user.nickname}"></td>
             <td th:text="${user.email}"></td>
-            <td th:text="${user.userrole}"></td>
+            <td th:text="${user.role}"></td>
             <td>
-                <form th:action="@{/users/{userId}/userrole(userId=${user.id})}" method="post">
-                    <select name="userrole">
-                        <option value="NORMAL">NORMAL</option>
-                        <option value="VIP">VIP</option>
+                <form th:action="@{/users/{id}/role(id=${user.id})}" method="post">
+                    <select name="role">
+                        <option value="USER">USER</option>
+                        <option value="ADMIN">ADMIN</option>
                     </select>
                     <button type="submit">Update UserRole</button>
                 </form>

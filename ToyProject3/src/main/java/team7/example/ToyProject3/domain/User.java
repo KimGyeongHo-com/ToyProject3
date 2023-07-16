@@ -24,7 +24,11 @@ public class User {
     @Column(length = 30, nullable = false, name = "email")
     private String email;
 
+    @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @Enumerated(value = EnumType.STRING)
+    private UserRole userrole;
 
     private String nickname;
 

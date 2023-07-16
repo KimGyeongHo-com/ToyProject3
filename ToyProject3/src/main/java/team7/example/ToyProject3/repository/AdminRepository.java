@@ -20,5 +20,7 @@ public interface AdminRepository {
 
     void sendEmailToUser(@Param("userId") Long userId, @Param("subject") String subject, @Param("message") String message);
 
+    List<AdminBoardDto> getAllBoards();
 
+    Integer deleteBoardById(Integer id);
 }

@@ -41,6 +41,21 @@ public class AdminController {
         return "redirect:/users";
     }
 
+    // 게시글 리스트
+    @GetMapping("/userboard")
+    public String getAllBoards(Model model) {
+        List<AdminBoardDto> adminBoardDto = adminService.getAllBoards();
+        model.addAttribute("userboard", adminBoardDto);
+        return "userboard";
+    }
 
+    // 게시글 삭제
+    @GetMapping("/boardList/{id}/delete")
+    public String deleteBoard(@PathVariable(name = "id") Integer id) {
+
+        adminService.deleteBoardById(id);
+
+        return "redirect:/admin/boardList";
+    }
 
 }

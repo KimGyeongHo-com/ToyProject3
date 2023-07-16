@@ -45,4 +45,20 @@ public class AdminService {
         }
     }
 
+    // 게시글 목록 보기
+    public List<AdminBoardDto> getAllBoards() {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            AdminRepository adminRepository = sqlSession.getMapper(AdminRepository.class);
+            return adminRepository.getAllBoards();
+        }
+    }
+
+    // 게시글 삭제
+    public void deleteBoardById(Integer id) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            AdminRepository adminRepository = sqlSession.getMapper(AdminRepository.class);
+            adminRepository.deleteBoardById(id);
+            sqlSession.commit();
+        }
+    }
 }

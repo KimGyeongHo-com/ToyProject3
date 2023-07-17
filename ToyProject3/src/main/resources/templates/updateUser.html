@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <title>회원 정보 수정</title>
+</head>
+<body>
+<h1>회원 정보 수정 페이지 입니다.</h1>
+<hr>
+
+<form th:action="@{/updateUser}" method="post" modelAttribute="userDto">
+<!--    <div th:if="${error}" class="error-message">-->
+<!--        <span th:text="${error}"></span>-->
+<!--    </div>-->
+    <div>
+        <input type="text" name="email" th:value="${userDto?.email}" placeholder="변경하실 이메일을 입력해주세요.">
+        <span th:text="${valid_email}"></span>
+    </div>
+
+    <div>
+        <input type="password" name="password" placeholder="변경하실 비밀번호를 입력해주세요">
+        <span th:text="${valid_password}"></span>
+    </div>
+
+    <div>
+        <input type="text" name="name" th:value="${userDto?.name}" placeholder="이름">
+        <span th:text="${valid_name}"></span>
+    </div>
+
+    <div>
+        <input type="text" name="nickname" th:value="${userDto?.nickname}" placeholder="닉네임을 입력해주세요.">
+        <span th:text="${valid_nickname}"></span>
+    </div>
+
+    <button>수정</button>
+</form>
+</body>
+</html>

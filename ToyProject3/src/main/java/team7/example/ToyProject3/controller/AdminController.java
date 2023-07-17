@@ -50,12 +50,12 @@ public class AdminController {
     }
 
     // 게시글 삭제
-    @GetMapping("/boardList/{id}/delete")
+    @PostMapping("/boardList/{id}/delete")
     public String deleteBoard(@PathVariable(name = "id") Integer id) {
 
         adminService.deleteBoardById(id);
 
-        return "redirect:/admin/boardList";
+        return "redirect:/userboard";
     }
 
 }

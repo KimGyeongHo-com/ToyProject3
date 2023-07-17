@@ -23,6 +23,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<?> UserException(UserException e) {
+        String response = ErrorScript.alertBuild(e.getErrorCode().getDescription());
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus()).body(response);
+    }
+
     @ExceptionHandler(BoardException.class)
     public ResponseEntity<?> boardException(BoardException e) {
         String response = ErrorScript.alertBuild(e.getErrorCode().getDescription());

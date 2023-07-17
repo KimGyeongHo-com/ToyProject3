@@ -5,9 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import team7.example.ToyProject3.domain.Role;
-import team7.example.ToyProject3.domain.User;
-import team7.example.ToyProject3.domain.UserRole;
 import team7.example.ToyProject3.dto.AdminBoardDto;
+import team7.example.ToyProject3.dto.AllUsersInfoDto;
 import team7.example.ToyProject3.service.AdminService;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class AdminController {
     // 유저 리스트
     @GetMapping("/users")
     public String getAllUsers(Model model) {
-        List<User> users = adminService.getAllUsers();
+        List<AllUsersInfoDto> users = adminService.getAllUsers();
         model.addAttribute("users", users);
         return "users";
     }

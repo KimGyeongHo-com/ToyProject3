@@ -2,11 +2,9 @@ package team7.example.ToyProject3.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import team7.example.ToyProject3.domain.Board;
 import team7.example.ToyProject3.domain.Role;
-import team7.example.ToyProject3.domain.User;
-import team7.example.ToyProject3.domain.UserRole;
 import team7.example.ToyProject3.dto.AdminBoardDto;
+import team7.example.ToyProject3.dto.AllUsersInfoDto;
 
 import java.util.List;
 
@@ -14,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface AdminRepository {
 
-    List<User> getAllUsers();
+    List<AllUsersInfoDto> getAllUsers();
 
     void updateRoleById(Long id, Role role);
 
@@ -23,4 +21,5 @@ public interface AdminRepository {
     List<AdminBoardDto> getAllBoards();
 
     Integer deleteBoardById(Integer id);
+
 }

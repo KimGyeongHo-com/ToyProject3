@@ -5,8 +5,12 @@
 
 <mapper namespace="team7.example.ToyProject3.repository.AdminRepository">
 
-    <select id="getAllUsers" resultType="User">
-        SELECT * FROM user
+    <select id="getAllUsers" resultType="team7.example.ToyProject3.dto.AllUsersInfoDto">
+        SELECT u.id, u.name, u.nickname, u.email, u.role AS role, COUNT(b.id) AS qtyOfBoard
+        FROM user u
+        LEFT JOIN board b ON u.id = b.user_id
+        GROUP BY u.id
+        ORDER BY qtyOfBoard DESC
     </select>
 
     <update id="updateRoleById">

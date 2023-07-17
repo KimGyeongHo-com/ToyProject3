@@ -5,8 +5,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Service;
 import team7.example.ToyProject3.domain.Role;
-import team7.example.ToyProject3.domain.User;
 import team7.example.ToyProject3.dto.AdminBoardDto;
+import team7.example.ToyProject3.dto.AllUsersInfoDto;
 import team7.example.ToyProject3.repository.AdminRepository;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class AdminService {
 
 
     // 유저 리스트
-    public List<User> getAllUsers() {
+    public List<AllUsersInfoDto> getAllUsers() {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             AdminRepository adminRepository = sqlSession.getMapper(AdminRepository.class);
             return adminRepository.getAllUsers();
@@ -61,4 +61,6 @@ public class AdminService {
             sqlSession.commit();
         }
     }
+
+
 }

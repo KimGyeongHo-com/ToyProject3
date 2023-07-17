@@ -1,13 +1,13 @@
 package team7.example.ToyProject3.domain;
 
 import lombok.Getter;
-import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,4 +20,11 @@ public class UserAdaptor extends User implements Serializable {
         this.user = user;
     }
 
+    private List<GrantedAuthority> getAuthorities(Role role) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.name()));
+        return authorities;
+    }
+
 }
+

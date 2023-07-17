@@ -8,12 +8,12 @@ import team7.example.ToyProject3.dto.reply.ReplyResponseDto;
 
 public interface ReplyService {
 
-	void addReply(ReplyRequestDto replyRequestDto, User user);
+	void addReply(ReplyRequestDto.ReplyDto saveReplyDto, User user);
 	void deleteReply(Long boardId, Long replyId, User user);
 
-	Reply addNestedReplies(Long boardId, Long parentReplyId, String content, User user);
+	Reply addNestedReply(ReplyRequestDto.NestedReplyDto saveNestedReplyDto, User user);
 
-	void deleteNestedReplies(Long boardId, Long replyId, User user);
+	void deleteNestedReply(Long boardId, Long replyId,  User user);
 
 	List<ReplyResponseDto> getAllReplyByBoard(Long boardId);
 }

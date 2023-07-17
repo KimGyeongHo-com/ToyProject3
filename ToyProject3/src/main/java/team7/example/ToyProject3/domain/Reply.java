@@ -1,7 +1,7 @@
 package team7.example.ToyProject3.domain;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import lombok.*;
@@ -42,11 +42,11 @@ public class Reply {
 
 	@UpdateTimestamp
 	@Column(name = "created_at", updatable = false)
-	private Date createdAt;
+	private Timestamp createdAt;
 
 	@UpdateTimestamp
 	@Column(name = "updated_at")
-	private Date updatedAt;
+	private Timestamp updatedAt;
 
 	public void addChildReply(Reply reply) {
 		if (reply.getParentReply() != this) {

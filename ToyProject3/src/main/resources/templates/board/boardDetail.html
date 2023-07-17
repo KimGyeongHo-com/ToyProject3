@@ -34,21 +34,33 @@
             <ul id="replyList">
                 <li th:each="reply : ${replyList}">
                     <span th:text="${reply.content}"></span>
-                    <a th:href="@{/board/{boardId}/reply/{replyId}/(boardId=${board.boardId}, replyId=${reply.id})}"
-                       class="btn btn-danger">삭제</a>
-                    <div class="col-md-12">
-                        <ul>
-                            <li th:each="child : ${reply.children}">
-                                <span th:text="${child.content}"></span>
-                            </li>
-                        </ul>
-                        <form method="post" class="childReplyForm" th:action="@{/board/{boardId}/reply/{parentReplyId}(boardId=${board.boardId}, parentReplyId=${reply.id})}">
+                    <span th:text="${reply.user.nickname}"></span>
+                    <span th:text="${reply.createdAt}"></span>
+                    <span th:if="${reply.user.id eq userId}">
+                        <a th:href="@{/board/{boardId}/reply/{replyId}/(boardId=${reply.board.id}, replyId=${reply.id})}"
+                           id= "deleteReplyBtn" class="delete-reply btn btn-danger">삭제</a>
+                    </span>
+                    <button class="btn btn-link showNestedReplyForm">답글</button>
+                    <div class="col-md-12 nestedReplyFormWrapper" style="display: none;">
+                        <form method="post" class="childReplyForm"
+                              th:action="@{/board/{boardId}/reply/{parentReplyId}(boardId=${reply.board.id}, parentReplyId=${reply.id})}">
                             <div class="mb-3">
                                 <textarea name="content" class="form-control" rows="3" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">댓글 작성</button>
                         </form>
                     </div>
+                    <ul>
+                        <li th:each="child : ${reply.children}">
+                            <span th:text="${child.content}"></span>
+                            <span th:text="${child.user.nickname}"></span>
+                            <span th:text="${child.createdAt}"></span>
+                            <span th:if="${child.user.id eq userId}">
+                                <a th:href="@{/board/{boardId}/nestedReply/{replyId}(boardId=${child.board.id}, replyId=${child.id})}"
+                                   id= "deleteNestedReplyBtn" class="delete-nested-reply btn btn-danger">삭제</a>
+                            </span>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -68,18 +80,7 @@
             });
         });
 
-        $('#replyList').on('submit', '.childReplyForm', (e) => {
-            e.preventDefault();
-            const form = $(e.target);
-            const url = form.attr('action');
-            const data = form.serialize();
-            $.post(url, data, (response) => {
-                const replyList = $(response).find('#replyList').html();
-                $('#replyList').html(replyList);
-            });
-        });
-
-        $('#replyList').on('click', '.btn-danger', (e) => {
+        $('#deleteReplyBtn').on('click', '.delete-reply', (e) => {
             e.preventDefault();
             const link = $(e.target);
             const url = link.attr('href');
@@ -92,6 +93,39 @@
                 }
             });
         });
+
+        $('#replyList').on('submit', '.childReplyForm', (e) => {
+            e.preventDefault();
+            const form = $(e.target);
+            const url = form.attr('action');
+            const data = form.serialize();
+            $.post(url, data, (response) => {
+                const replyList = $(response).find('#replyList').html();
+                $('#replyList').html(replyList);
+            });
+        });
+
+        $('#deleteNestedReplyBtn').on('click', '.delete-nested-reply', (e) => {
+            e.preventDefault();
+            const link = $(e.target);
+            const url = link.attr('href');
+            $.ajax({
+                url,
+                type: 'GET',
+                success: (response) => {
+                    const replyList = $(response).find('#replyList').html();
+                    $('#replyList').html(replyList);
+                }
+            });
+        });
+
+        $('#replyList').on('click', '.showNestedReplyForm', (e) => {
+            e.preventDefault();
+            const button = $(e.target);
+            const nestedReplyFormWrapper = button.next('.nestedReplyFormWrapper');
+            nestedReplyFormWrapper.toggle();
+        });
+
     });
 </script>
 

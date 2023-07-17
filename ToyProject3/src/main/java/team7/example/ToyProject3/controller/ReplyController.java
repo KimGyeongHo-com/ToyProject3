@@ -19,9 +19,9 @@ public class ReplyController {
 	private final ReplyService replyService;
 
 	@PostMapping("/{boardId}/reply")
-	public String addReply(ReplyRequestDto replyRequestDto,
+	public String addReply(ReplyRequestDto.ReplyDto saveReplyDto,
 		@AuthenticationPrincipal UserAdaptor userAdaptor) {
-		replyService.addReply(replyRequestDto, userAdaptor.getUser());
+		replyService.addReply(saveReplyDto, userAdaptor.getUser());
 		return "redirect:/board/{boardId}";
 	}
 
@@ -33,20 +33,18 @@ public class ReplyController {
 	}
 
 	@PostMapping("/{boardId}/reply/{parentReplyId}")
-	public String addNestedReplies(
-		@PathVariable Long boardId,
-		@PathVariable Long parentReplyId,
-		ReplyRequestDto replyRequestDto,
+	public String addNestedReply(
+		ReplyRequestDto.NestedReplyDto saveNestedReplyDto,
 		@AuthenticationPrincipal UserAdaptor userAdaptor) {
-		replyService.addNestedReplies(boardId, parentReplyId, replyRequestDto.getContent(), userAdaptor.getUser());
+		replyService.addNestedReply(saveNestedReplyDto, userAdaptor.getUser());
 		return "redirect:/board/{boardId}";
 	}
 
-	@GetMapping("/{boardId}/nestedReplies/{replyId}")
-	public String deleteNestedReplies(
+	@GetMapping("/{boardId}/nestedReply/{replyId}")
+	public String deleteNestedReply(
 		@PathVariable Long boardId, @PathVariable Long replyId,
 		@AuthenticationPrincipal UserAdaptor userAdaptor) {
-		replyService.deleteNestedReplies(boardId, replyId, userAdaptor.getUser());
+		replyService.deleteNestedReply(boardId, replyId, userAdaptor.getUser());
 		return "redirect:/board/{boardId}";
 	}
 }

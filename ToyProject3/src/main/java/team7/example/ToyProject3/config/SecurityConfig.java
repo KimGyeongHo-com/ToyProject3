@@ -1,6 +1,6 @@
 package team7.example.ToyProject3.config;
 
-import lombok.AllArgsConstructor;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import team7.example.ToyProject3.service.OAuth2GoogleService;
 import team7.example.ToyProject3.service.UserService;
+
 
 @Configuration
 @EnableWebSecurity // Spring Security 설정할 클래스라고 정의
@@ -20,6 +22,7 @@ import team7.example.ToyProject3.service.UserService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
+    private final OAuth2GoogleService oAuth2GoogleService;
 
     // 비밀번호 암호화 : 스프링 시큐리티에서 제공하는 비밀번호 암호화 객체
     // Service에서 비밀번호를 암호화 할 수 있도록 Bean으로 등록.
@@ -46,12 +49,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //     세션, 토큰, 쿠키의 차이를 알고 싶다면 유튜브 노마드 코더의 영상을 보시면 이해가 편합니다. (저도 봄)
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN") // admin 페이지
                 .antMatchers("/info").hasRole("USER") // 마이페이지는 user 로그인 된 사람만 접근 가능
                 .antMatchers("/**").permitAll() // 을 제외한 모든 페이지는 접근 가능함.
+                .antMatchers("/callback").permitAll()
                 .and()
                 .formLogin()// 로그인 부분, form 기반으로 인증, 로그인 정보는 기본적으로 HttpSession을 이용
                 // /login 경로로 접근하면 시큐리티에서 제공하는 loginFrom()사용 가능
@@ -60,13 +65,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll() // 로그인 페이지는 모두 접근 가능.
                 .usernameParameter("email")
                 .passwordParameter("password")//-> name=username input으로 기본 인식, 바꿀 수 있음.
+
                 .and()
                 .logout()//로그아웃 부분
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))// 로그아웃의 기본(/logout)이 아닌 다른 url로 정의
                 .logoutSuccessUrl("/logout/result")
                 .invalidateHttpSession(true) //http 세션을 초기화
                 .and()
-                .exceptionHandling().accessDeniedPage("/denied"); // 예외 발생 메서드
+                .oauth2Login()
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/")
+                    .userInfoEndpoint()
+                        .userService(oAuth2GoogleService);
     }
 
     // 모든 인증을 처리하기 위한 AuthenticationManager
@@ -77,4 +87,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder()); // 비밀번호 암호화
     }
+
+
 }

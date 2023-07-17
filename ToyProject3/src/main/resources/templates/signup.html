@@ -1,19 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>회원가입 페이지</title>
+
+    <title>회원가입</title>
 </head>
 <body>
-<h1>회원 가입</h1>
-<hr>
+    <h1>회원 가입</h1>
+    <hr>
 
-<form th:action="@{/signup}" method="post">
-    <input type="text" name="email" placeholder="이메일 입력해주세요">
-    <input type="text" name="name" placeholder="이름">
-    <input type="password" name="password" placeholder="비밀번호">
-    <input type="text" name="nickname" placeholder="닉네임">
-    <button type="submit">가입하기</button>
-</form>
+    <form th:action="@{/signup}" method="post" modelAttribute="userDto">
+        <div th:if="${error}" class="error-message">
+            <span th:text="${error}"></span>
+        </div>
+        <div>
+            <input type="text" name="email" th:value="${userDto?.email}" placeholder="이메일을 입력해주세요.">
+            <span th:text="${valid_email}"></span>
+        </div>
+
+        <div>
+            <input type="password" name="password" placeholder="비밀번호">
+            <span th:text="${valid_password}"></span>
+        </div>
+
+        <div>
+            <input type="text" name="name" th:value="${userDto?.name}" placeholder="이름을 입력해주세요.">
+            <span th:text="${valid_name}"></span>
+        </div>
+
+        <div>
+            <input type="text" name="nickname" th:value="${userDto?.nickname}" placeholder="닉네임을 입력해주세요.">
+            <span th:text="${valid_nickname}"></span>
+        </div>
+
+        <button>등록</button>
+    </form>
 </body>
 </html>

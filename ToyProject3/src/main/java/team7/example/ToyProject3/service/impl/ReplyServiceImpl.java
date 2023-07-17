@@ -76,15 +76,12 @@ public class ReplyServiceImpl implements ReplyService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<ReplyResponseDto> getAllReplyByBoard(Long boardId) {
-		Board board = boardRepository.findById(boardId)
-			.orElseThrow(() -> new IllegalArgumentException("게시물 id를 찾을 수 없습니다."));
-
-		List<Reply> replies = replyRepository.findAllByBoard(board);
+		List<Reply> sortedBoardReplies = replyRepository.findAllByBoardIdOrderByParentAndCreatedAt(boardId);
 
 		List<ReplyResponseDto> replyResponseDtoList = new ArrayList<>();
 		Map<Long, ReplyResponseDto> replyResponseDtoMap = new HashMap<>();
 
-		for (Reply reply : replies) {
+		for (Reply reply : sortedBoardReplies) {
 			ReplyResponseDto replyResponseDto = ReplyResponseDto.builder()
 				.id(reply.getId())
 				.content(reply.getContent())
@@ -100,7 +97,6 @@ public class ReplyServiceImpl implements ReplyService {
 				replyResponseDtoList.add(replyResponseDto);
 			}
 		}
-
 		return replyResponseDtoList;
 	}
 
@@ -116,12 +112,7 @@ public class ReplyServiceImpl implements ReplyService {
 		if (parentReply != null) {
 			parentReply.getChildReplies().remove(reply);
 		}
-
 		replyRepository.delete(reply);
 	}
-
-
-
-
 }
 

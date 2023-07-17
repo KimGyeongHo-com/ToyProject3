@@ -5,8 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Data
 @Table(name = "user")
 @Entity
@@ -26,6 +25,8 @@ public class User {
 
     private Role role;
 
+    private UserRole userRole;
+
     private String nickname;
 
     @Column(name = "created_at")
@@ -34,12 +35,6 @@ public class User {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    public void setAdmain(String email){
-        if(this.email == email)
-            role = Role.ADMIN;
-        else
-            role = Role.USER;
-    }
 
 
 }

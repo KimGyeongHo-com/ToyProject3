@@ -10,17 +10,22 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js"></script>
 </head>
+<body>
 <div class="container">
-  <form method="post" th:action="'/board/update/' + ${board.boardId}">
-    <input th:value="${board.title}" type="text" name="title" >
-    <textarea th:utext="${board.content}" id="summernote" name="content"></textarea>
+  <form method="post" th:action="'/board/update/' + ${board.boardId}" class="mt-5">
+    <div class="form-group">
+      <input th:value="${board.title}" type="text" class="form-control" name="title" placeholder="제목">
+    </div>
+    <div class="form-group">
+      <textarea th:utext="${board.content}" id="summernote" class="form-control" name="content" placeholder="내용"></textarea>
+    </div>
     <script>
       $('#summernote').summernote({
         height: 400
       });
     </script>
-    <button>수정</button>
+    <button type="submit" class="btn btn-primary">수정</button>
   </form>
 </div>
-
+</body>
 </html>

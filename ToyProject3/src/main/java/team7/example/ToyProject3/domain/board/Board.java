@@ -1,6 +1,8 @@
-package team7.example.ToyProject3.domain;
+package team7.example.ToyProject3.domain.board;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import team7.example.ToyProject3.domain.User;
 import team7.example.ToyProject3.dto.board.BoardRequest;
 
 import javax.persistence.*;
@@ -10,7 +12,6 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Getter
 @Entity
 public class Board {
@@ -18,18 +19,26 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String title;
+
     @Lob
     private String content;
+
     @Lob
     private String thumbnail;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BoardType boardType;
+
+    @Enumerated(EnumType.STRING)
+    private BoardStatus boardStatus;
 
     private Timestamp createdAt;
     private Timestamp updateAt;
@@ -47,6 +56,10 @@ public class Board {
     public void updateBoard(BoardRequest.updateBoardDTO boardUpdateDTO) {
         this.title = boardUpdateDTO.getTitle();
         this.content = boardUpdateDTO.getContent();
+    }
+
+    public void changeStatus() {
+        this.boardStatus = (this.boardStatus == BoardStatus.ENABLED) ? BoardStatus.DISABLED : BoardStatus.ENABLED;
     }
 
 }

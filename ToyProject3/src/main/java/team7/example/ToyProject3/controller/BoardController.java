@@ -2,7 +2,10 @@ package team7.example.ToyProject3.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,36 +18,40 @@ import team7.example.ToyProject3.dto.board.BoardRequest;
 import team7.example.ToyProject3.dto.board.BoardResponse;
 import team7.example.ToyProject3.service.BoardService;
 
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import javax.validation.Valid;
 
+@PreAuthorize("isAuthenticated()")
 @RequiredArgsConstructor
 @Controller
 public class BoardController {
 
     private final BoardService boardService;
 
+    @PreAuthorize("permitAll()")
     @GetMapping( "/board")
     public String boardList(
             @RequestParam(defaultValue = "sprout") String boardType,
             @RequestParam(defaultValue = "") String search,
-            @RequestParam(defaultValue = "0") Integer page,
+            @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             Model model
     ) {
-        Page<BoardResponse.BoardListDTO> boardList = boardService.findAll(boardType, search, page);
+        System.out.println(boardType);
+        Page<BoardResponse.BoardListDTO> boardList = boardService.findAll(boardType, search, pageable);
         model.addAttribute("boards", boardList);
-        System.out.println(boardList.getPageable().first());
-        model.addAttribute("totalPage", IntStream
-                .range(Math.min(0, Math.abs(page - 5)), Math.min(boardList.getTotalPages(), Math.min(0, Math.abs(page - 5)) + 10))
-                .boxed()
-                .collect(Collectors.toList())
-        );
+        model.addAttribute("boardType", boardType);
+
         return "/board/boardList";
+    }
+
+
+    @GetMapping("/saveForm")
+    public String boardForm() {
+        return "/board/saveForm";
     }
 
     @PostMapping("/board/save")
     public String save(
-            BoardRequest.saveBoardDTO saveBoardDTO,
+            @Valid BoardRequest.saveBoardDTO saveBoardDTO,
             @AuthenticationPrincipal UserAdaptor userAdaptor
     ) {
         boardService.savaBoard(saveBoardDTO, userAdaptor.getUser());
@@ -60,6 +67,7 @@ public class BoardController {
         model.addAttribute("board", board);
         return "/board/boardDetail";
     }
+
 
     @GetMapping("/board/delete/{boardId}")
     public String delete(
@@ -90,8 +98,4 @@ public class BoardController {
         return "redirect:/board/{boardId}";
     }
 
-    @GetMapping("/boardForm")
-    public String boardForm() {
-        return "/board/boardForm";
-    }
 }

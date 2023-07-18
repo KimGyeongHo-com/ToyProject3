@@ -49,35 +49,33 @@
 </style>
 <script>
     function getBoard(url) {
-        console.log("hi");
         $.ajax({
             url: url,
             type: "GET",
         })
             .done(function (fragment) {
-                console.log(fragment);
-                $('#testboard').replaceWith(fragment);
+                $('#list').html(fragment);
             })
-    }
-    function getPageBoard(page) {
-        console.log(page);
-        const url = '/board?page=' + page;
-        getBoard(url);
     }
 </script>
 <body>
-<div th:replace="~{/layout/header :: copy}"></div>
-<div class="container" id="testboard">
+<div th:replace="~{/layout/header :: header}"></div>
+<div class="container" id="list">
+    <div th:text="${#authentication.name}"></div>
+
     <div class="row">
+
         <div class="col-lg-2">
             <h3 class="my-4 text-center">Category</h3>
             <div class="list-group mb-4">
                 <button onclick="getBoard('/board?boardType=sprout')" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 새싹 게시판</button>
                 <button onclick="getBoard('/board?boardType=great')" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 우수 게시판</button>
-                <a th:if="${#authorization.expr('isAuthenticated()')}" href="/boardForm" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 글쓰기</a>
+                <a th:if="${#authorization.expr('isAuthenticated()')}" href="/saveForm" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 글쓰기</a>
             </div>
         </div>
+
         <div class="col-lg-10" >
+
             <div class="row row-cols-3 " >
                 <button class="button" th:each="board : ${boards}" th:onclick="|location.href='@{/board/}' + ${board.boardId}|">
                     <img th:src="${board.thumbnail}" height="200px" width="290px">
@@ -88,22 +86,24 @@
                 </button>
             </div>
 
-        <ul class="paging">
-            <li class="item" th:each="page : ${totalPage}">
-                <a th:if="${param.search != null}" th:href="@{/board(search=${param.search}, page=${page})}" th:text="${page+1}">1</a>
-                <button th:if="${param.search == null}" th:onclick="'getPageBoard(' + ${page} + ')'" th:text="${page+1}"></button>
-            </li>
-        </ul>
-            <form class="search" method="get" action="/board">
-                <input type="text" name="search">
-                <button>검색</button>
+<!--            <ul class="paging">-->
+<!--                <li class="item" th:each="page : ${totalPage}">-->
+<!--                    <a th:if="${param.search != null}" th:href="@{/board(search=${param.search}, page=${page})}" th:text="${page+1}">1</a>-->
+<!--                <a th:if="${param.search != null}" th:href="|getBoard('@{/board?search=}' +${param.search}+ '@{&page=}' +${page})|" th:text="${page+1}">1</a>-->
+<!--                    <button th:if="${param.search == null}" th:onclick="|getBoard('@{/board?page=}' +${page})|" th:text="${page+1}"></button>-->
+<!--                </li>-->
+<!--            </ul>-->
+
+            <div th:text="${boardType}"></div>
+            <div th:text="${param.boardType}"></div>
+            <form class="search" id="searchForm" method="get" >
+                <input type="text" name="search" id="search">
+                <button class="btn btn-primary" type="submit">검색</button>
             </form>
+
+
         </div>
-
-
     </div>
-
-
 </div>
 </body>
 </html>

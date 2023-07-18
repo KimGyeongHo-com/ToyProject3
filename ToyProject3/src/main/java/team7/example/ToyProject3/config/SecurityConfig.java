@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()//로그아웃 부분
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))// 로그아웃의 기본(/logout)이 아닌 다른 url로 정의
-                .logoutSuccessUrl("/logout/result")
+                .logoutSuccessUrl("/board") // 리턴할 페이지 지정
                 .invalidateHttpSession(true) //http 세션을 초기화
                 .and()
                 .oauth2Login()

@@ -15,6 +15,8 @@ import team7.example.ToyProject3.domain.Role;
 import team7.example.ToyProject3.domain.User;
 import team7.example.ToyProject3.domain.UserAdaptor;
 import team7.example.ToyProject3.dto.UserDto;
+import team7.example.ToyProject3.exception.ErrorCode;
+import team7.example.ToyProject3.exception.UserException;
 import team7.example.ToyProject3.repository.UserRepository;
 
 import javax.servlet.http.HttpSession;
@@ -52,12 +54,13 @@ public class UserService implements UserDetailsService {
         else
             userDto.setRole(Role.USER);
 
+        //to do - 에러 변경해주기
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 이메일 입니다");
+            throw new UserException(ErrorCode.ERROR_DUPLICATED_EMAIL_EXCEPTION);
         }
 
         if (userRepository.findByNickname(userDto.getNickname()).isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 닉네임 입니다");
+            throw new UserException(ErrorCode.ERROR_DUPLICATED_NICKNAME_EXCEPTION);
         }
 
         return userRepository.save(userDto.toEntity(userDto)).getId();
@@ -66,6 +69,14 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void updateUser(User user, UserDto userDto){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent() ^ userDto.getEmail().equals(user.getEmail())) {
+            throw new UserException(ErrorCode.ERROR_DUPLICATED_EMAIL_EXCEPTION);
+        }
+
+        if (userRepository.findByNickname(userDto.getNickname()).isPresent() ^ userDto.getNickname().equals(user.getNickname())) {
+            throw new UserException(ErrorCode.ERROR_DUPLICATED_NICKNAME_EXCEPTION);
+        }
 
 
         user.setEmail(userDto.getEmail());

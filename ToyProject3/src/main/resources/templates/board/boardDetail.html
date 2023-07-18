@@ -1,20 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Reply List</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+        function getReportForm(boardId) {
+            $.ajax({
+                url: "/reportForm/" + boardId,
+                type: "GET",
+            })
+                .done(function (fragment) {
+                    $('#reportForm').html(fragment);
+                })
+
+        }
+    </script>
 </head>
 <body>
-<div th:replace="~{/layout/header :: copy}"></div>
+<div th:replace="~{/layout/header :: header}"></div>
+<div id="reportForm"></div>
 <div class="container">
-    <div th:text="${board.boardId}"></div>
-    <div th:text="${board.title}"></div>
-    <div th:utext="${board.content}"></div>
-    <div th:text="${board.nickName}"></div>
-    <button th:onclick="|location.href='@{/board/delete/}' + ${board.boardId}|">삭제하기</button>
-    <button th:onclick="|location.href='@{/board/updateForm/}' + ${board.boardId}|">수정하기</button>
+    <div class="card mt-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title" th:text="${board.title}"></h5>
+            <div>
+                <div>
+                    <button class="btn btn-danger" th:if="${#authentication.name} == ${board.userEmail}" th:onclick="|location.href='@{/board/delete/}' + ${board.boardId}|">삭제하기</button>
+                    <button class="btn btn-primary" th:if="${#authentication.name} == ${board.userEmail}" th:onclick="|location.href='@{/board/updateForm/}' + ${board.boardId}|">수정하기</button>
+                    <button class="btn btn-secondary" th:if="${#authorization.expr('isAuthenticated()')}" th:onclick="'getReportForm('+ ${board.boardId} +')'">신고하기</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="card-text" th:utext="${board.content}"></p>
+            <p class="card-text">작성자: <span th:text="${board.nickName}"></span></p>
+        </div>
+    </div>
+
 
     <div class="row">
         <div class="col-md-12">
@@ -129,5 +153,6 @@
     });
 </script>
 
+
+</div>
 </body>
-</html>

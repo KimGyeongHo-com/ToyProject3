@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+</head>
+<body>
+<h1>메인 페이지</h1>
+<hr>
+<a sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
+<a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
+<a sec:authorize="isAuthenticated()" th:href="@{/updateUser}">회원 정보 수정</a>
+<a sec:authorize="isAnonymous()" th:href="@{/signup}">회원가입</a>
+<!--<a sec:authorize="isAnonymous()" th:href="https://kauth.kakao.com/oauth/authorize?client_id=501e9b1cb3cc07189495642751b8a4c1&redirect_uri=http://localhost:8080/callback&response_type=code&scope=account_email">카카오로그인</a>-->
+<a sec:authorize="isAnonymous()" th:href="'https://kauth.kakao.com/oauth/authorize?client_id=501e9b1cb3cc07189495642751b8a4c1&amp;redirect_uri=http://localhost:8080/callback&amp;response_type=code&amp;scope=account_email'">카카오로그인</a>
+<!--<a sec:authorize="isAnonymous()" th:href="/oauth2/authorization/google">구글 로그인</a>-->
+<a sec:authorize="isAnonymous()" th:href="@{${'/oauth2/authorization/google'}}">구글 로그인(로그인 기능만 구현 게시판과 연동x)</a>
+<a sec:authorize="hasRole('ROLE_USER')" th:href="@{/info}">내정보</a>
+<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">어드민</a>
+</body>
+</html>
+
+<!--501e9b1cb3cc07189495642751b8a4c1-->

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js"></script>
+
+</head>
+<body>
+<div th:replace="~{/layout/header :: header}"></div>
+<div class="container">
+    <form method="post" action="/board/save" class="mt-5">
+        <div class="form-group">
+            <input type="text" class="form-control" name="title" placeholder="제목">
+        </div>
+        <div class="form-group">
+            <textarea id="summernote" class="form-control" name="content" placeholder="내용"></textarea>
+        </div>
+        <div class="form-group">
+            <div id="preview"></div>
+        </div>
+        <script>
+            $('#summernote').summernote({
+                height: 500,
+                maxHeight: 500,
+                callbacks: {
+                    onChange: function(contents) {
+                        let updatedContents = removeFileElements(contents);
+                        // 변경된 내용을 미리보기 영역에 업데이트
+                        if (updatedContents.length < 20) {
+                            $('#preview').html(updatedContents);
+                        }
+                    }
+                }
+            });
+            function removeFileElements(contents) {
+                let temp = document.createElement('div');
+                temp.innerHTML = contents;
+
+                let imgElements = temp.getElementsByTagName('img');
+                let aElements = temp.getElementsByTagName('a');
+
+                // img 태그 삭제
+                for (let i = imgElements.length - 1; i >= 0; i--) {
+                    let imgElement = imgElements[i];
+                    imgElement.parentNode.removeChild(imgElement);
+                }
+
+                // a 태그 삭제
+                for (let j = aElements.length - 1; j >= 0; j--) {
+                    let aElement = aElements[j];
+                    aElement.parentNode.removeChild(aElement);
+                }
+
+                // 수정된 내용 반환
+                return temp.innerHTML;
+            }
+            function uploadSummernoteImageFile(file, editor) {
+                data = new FormData();
+                data.append("file", file);
+                // $.ajax({
+                //     data: data,
+                //     type: "POST",
+                //     url: "/uploadSummernoteImageFile",
+                //     dataType: "JSON",
+                //     contentType: false,
+                //     processData: false,
+                //     success: function(data) {
+                //         $(editor).summernote("insertImage", data.url);
+                //         $("#thumbnailPath").append("<option value="+data.url+">"+data.originName+"</option>");
+                //     }
+                // });
+            }
+        </script>
+
+        <button type="submit" class="btn btn-primary">제출</button>
+    </form>
+</div>
+</body>
+</html>

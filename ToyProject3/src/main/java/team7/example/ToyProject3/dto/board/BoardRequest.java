@@ -2,55 +2,54 @@ package team7.example.ToyProject3.dto.board;
 
 import lombok.Getter;
 import lombok.Setter;
-import team7.example.ToyProject3.domain.Board;
-import team7.example.ToyProject3.domain.BoardType;
-import team7.example.ToyProject3.domain.User;
+import team7.example.ToyProject3.domain.user.User;
+import team7.example.ToyProject3.domain.board.Board;
+import team7.example.ToyProject3.domain.board.BoardStatus;
+import team7.example.ToyProject3.domain.board.BoardType;
+import team7.example.ToyProject3.domain.user.UserRole;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 public class BoardRequest {
 
     private static BoardType byMemberType(User user) {
-        return false ? BoardType.SPROUT : BoardType.GREAT;
+        if (user.getUserRole() == UserRole.NORMAL) {
+            return BoardType.SPROUT;
+        }
+        if (user.getUserRole() == UserRole.VIP) {
+            return BoardType.GREAT;
+        }
+        return BoardType.NONE;
     }
 
     @Getter
     @Setter
     public static class saveBoardDTO {
-        @NotEmpty
+        @NotBlank(message = "제목이 공백일 수 없습니다")
         private String title;
-        @NotEmpty
+        @NotBlank(message = "내용이 공백일 수 없습니다")
         private String content;
         private String thumbnail;
 
         public Board toEntity(User user) {
             return Board.builder()
-                .content(content)
-                .title(title)
-                .thumbnail(thumbnail)
-                .boardType(byMemberType(user))
-                .user(user)
-                .build();
+                    .content(content)
+                    .title(title)
+                    .thumbnail(thumbnail)
+                    .boardType(byMemberType(user))
+                    .user(user)
+                    .boardStatus(BoardStatus.ENABLED)
+                    .build();
         }
     }
 
     @Getter
     @Setter
     public static class updateBoardDTO {
-        @NotEmpty
+        @NotBlank(message = "제목이 공백일 수 없습니다")
         private String title;
-        @NotEmpty
+        @NotBlank(message = "내용이 공백일 수 없습니다")
         private String content;
         private String thumbnail;
-
-        public Board toEntity(User user) {
-            return Board.builder()
-                .content(content)
-                .title(title)
-                .thumbnail(thumbnail)
-                .boardType(byMemberType(user))
-                .user(user)
-                .build();
-        }
     }
 }

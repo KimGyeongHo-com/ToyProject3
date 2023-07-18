@@ -1,6 +1,7 @@
-package team7.example.ToyProject3.domain;
+package team7.example.ToyProject3.domain.board;
 
 import lombok.*;
+import team7.example.ToyProject3.domain.user.User;
 import team7.example.ToyProject3.dto.board.BoardRequest;
 
 import javax.persistence.*;
@@ -11,7 +12,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Getter
 @Entity
 public class Board {
@@ -36,6 +36,9 @@ public class Board {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BoardType boardType;
+
+    @Enumerated(EnumType.STRING)
+    private BoardStatus boardStatus;
 
     private Timestamp createdAt;
     private Timestamp updateAt;

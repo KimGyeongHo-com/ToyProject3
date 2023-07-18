@@ -2,18 +2,24 @@ package team7.example.ToyProject3.dto.board;
 
 import lombok.Getter;
 import lombok.Setter;
-import team7.example.ToyProject3.domain.User;
+import team7.example.ToyProject3.domain.user.User;
 import team7.example.ToyProject3.domain.board.Board;
 import team7.example.ToyProject3.domain.board.BoardStatus;
 import team7.example.ToyProject3.domain.board.BoardType;
+import team7.example.ToyProject3.domain.user.UserRole;
 
 import javax.validation.constraints.NotBlank;
 
 public class BoardRequest {
 
-    // TODO user type 을 통해 sprout , great 예정
     private static BoardType byMemberType(User user) {
-        return false ? BoardType.SPROUT : BoardType.GREAT;
+        if (user.getUserRole() == UserRole.NORMAL) {
+            return BoardType.SPROUT;
+        }
+        if (user.getUserRole() == UserRole.VIP) {
+            return BoardType.GREAT;
+        }
+        return BoardType.NONE;
     }
 
     @Getter

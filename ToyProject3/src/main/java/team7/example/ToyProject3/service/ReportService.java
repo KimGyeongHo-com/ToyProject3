@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import team7.example.ToyProject3.domain.User;
+import team7.example.ToyProject3.domain.user.User;
 import team7.example.ToyProject3.domain.board.Board;
 import team7.example.ToyProject3.domain.report.Report;
 import team7.example.ToyProject3.dto.report.ReportRequest;

@@ -19,9 +19,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import team7.example.ToyProject3.domain.Role;
-import team7.example.ToyProject3.domain.User;
-import team7.example.ToyProject3.domain.UserAdaptor;
+import team7.example.ToyProject3.domain.user.Role;
+import team7.example.ToyProject3.domain.user.User;
+import team7.example.ToyProject3.domain.user.UserAdaptor;
 import team7.example.ToyProject3.dto.KakaoToken;
 import team7.example.ToyProject3.dto.OAuthProfile;
 import team7.example.ToyProject3.dto.UserDto;
@@ -31,7 +31,6 @@ import team7.example.ToyProject3.util.Fetch;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.sql.Timestamp;
 import java.util.*;
 
 @Controller

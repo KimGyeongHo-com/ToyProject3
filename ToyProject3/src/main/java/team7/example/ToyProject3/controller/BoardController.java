@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import team7.example.ToyProject3.domain.UserAdaptor;
+import team7.example.ToyProject3.domain.user.UserAdaptor;
 import team7.example.ToyProject3.dto.board.BoardRequest;
 import team7.example.ToyProject3.dto.board.BoardResponse;
 import team7.example.ToyProject3.service.BoardService;
@@ -35,7 +35,6 @@ public class BoardController {
             @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             Model model
     ) {
-        System.out.println(boardType);
         Page<BoardResponse.BoardListDTO> boardList = boardService.findAll(boardType, search, pageable);
         model.addAttribute("boards", boardList);
         model.addAttribute("boardType", boardType);

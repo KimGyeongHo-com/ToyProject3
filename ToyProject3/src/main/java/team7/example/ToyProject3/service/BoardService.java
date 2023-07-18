@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team7.example.ToyProject3.domain.User;
+import team7.example.ToyProject3.domain.user.User;
 import team7.example.ToyProject3.domain.board.Board;
 import team7.example.ToyProject3.domain.board.BoardStatus;
 import team7.example.ToyProject3.domain.board.BoardType;

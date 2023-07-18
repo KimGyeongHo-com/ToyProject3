@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import team7.example.ToyProject3.domain.Role;
-import team7.example.ToyProject3.domain.User;
-import team7.example.ToyProject3.domain.UserAdaptor;
+import team7.example.ToyProject3.domain.user.Role;
+import team7.example.ToyProject3.domain.user.User;
+import team7.example.ToyProject3.domain.user.UserAdaptor;
 import team7.example.ToyProject3.dto.UserDto;
 import team7.example.ToyProject3.repository.UserRepository;
 

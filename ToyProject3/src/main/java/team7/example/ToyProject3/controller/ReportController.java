@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import team7.example.ToyProject3.domain.UserAdaptor;
+import team7.example.ToyProject3.domain.user.UserAdaptor;
 import team7.example.ToyProject3.dto.report.ReportRequest;
 import team7.example.ToyProject3.service.ReportService;
 

@@ -3,7 +3,7 @@ package team7.example.ToyProject3.domain.report;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import team7.example.ToyProject3.domain.User;
+import team7.example.ToyProject3.domain.user.User;
 import team7.example.ToyProject3.domain.board.Board;
 
 import javax.persistence.*;

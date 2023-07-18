@@ -1,8 +1,7 @@
 package team7.example.ToyProject3.domain.board;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import team7.example.ToyProject3.domain.User;
+import team7.example.ToyProject3.domain.user.User;
 import team7.example.ToyProject3.dto.board.BoardRequest;
 
 import javax.persistence.*;
@@ -56,10 +55,6 @@ public class Board {
     public void updateBoard(BoardRequest.updateBoardDTO boardUpdateDTO) {
         this.title = boardUpdateDTO.getTitle();
         this.content = boardUpdateDTO.getContent();
-    }
-
-    public void changeStatus() {
-        this.boardStatus = (this.boardStatus == BoardStatus.ENABLED) ? BoardStatus.DISABLED : BoardStatus.ENABLED;
     }
 
 }

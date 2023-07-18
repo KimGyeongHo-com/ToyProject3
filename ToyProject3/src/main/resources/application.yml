@@ -13,3 +13,14 @@ spring:
         format_sql: true
         show_sql: true
         default_batch_fetch_size: 100
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 146099927945-m5t9i1473otneq4sm7j16ngjkkiuh3vh.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile

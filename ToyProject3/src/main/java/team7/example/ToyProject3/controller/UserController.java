@@ -56,7 +56,7 @@ public class UserController {
     @PostMapping("/signup")
     public String execSignup(@Valid UserDto userDto, Model model){
         userService.joinUser(userDto);
-        return "redirect:/login";
+        return "/login";
     }
 
 
@@ -126,7 +126,7 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
-            return "/loginSuccess";
+            return "/board";
         }
 
         return null;

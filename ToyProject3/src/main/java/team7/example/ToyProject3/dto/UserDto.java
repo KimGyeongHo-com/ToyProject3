@@ -1,9 +1,9 @@
 package team7.example.ToyProject3.dto;
 
 import lombok.*;
-import team7.example.ToyProject3.domain.Role;
-import team7.example.ToyProject3.domain.User;
-import team7.example.ToyProject3.domain.UserRole;
+import team7.example.ToyProject3.domain.user.Role;
+import team7.example.ToyProject3.domain.user.User;
+import team7.example.ToyProject3.domain.user.UserRole;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

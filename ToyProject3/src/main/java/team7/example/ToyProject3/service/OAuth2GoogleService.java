@@ -6,8 +6,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import team7.example.ToyProject3.domain.Role;
-import team7.example.ToyProject3.domain.User;
+import team7.example.ToyProject3.domain.user.Role;
+import team7.example.ToyProject3.domain.user.User;
 import team7.example.ToyProject3.dto.UserDto;
 import team7.example.ToyProject3.repository.UserRepository;
 

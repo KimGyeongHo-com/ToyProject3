@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body class="pt-5" th:fragment="header">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Toy Project 3</a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul th:if="${#authorization.expr('isAuthenticated()')}" class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
+                <li class="nav-item"><a class="nav-link" href="/info">마이페이지</a></li>
+            </ul>
+            <ul th:unless="${#authorization.expr('isAuthenticated()')}" class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>
+                <li class="nav-item"><a class="nav-link" href="/signup">회원가입</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</body>

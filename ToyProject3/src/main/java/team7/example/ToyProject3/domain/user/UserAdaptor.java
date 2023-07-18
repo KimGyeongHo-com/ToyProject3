@@ -1,4 +1,4 @@
-package team7.example.ToyProject3.domain;
+package team7.example.ToyProject3.domain.user;
 
 import lombok.Getter;
 
@@ -13,9 +13,9 @@ import java.util.List;
 @Getter
 public class UserAdaptor extends User implements Serializable {
 
-    private team7.example.ToyProject3.domain.User user;
+    private team7.example.ToyProject3.domain.user.User user;
 
-    public UserAdaptor(team7.example.ToyProject3.domain.User user, List<GrantedAuthority> authorities){
+    public UserAdaptor(team7.example.ToyProject3.domain.user.User user, List<GrantedAuthority> authorities){
         super(user.getEmail(),user.getPassword(), authorities);
         this.user = user;
     }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js"></script>
+</head>
+<body>
+<div class="container">
+  <form method="post" th:action="'/board/update/' + ${board.boardId}" class="mt-5">
+    <div class="form-group">
+      <input th:value="${board.title}" type="text" class="form-control" name="title" placeholder="제목">
+    </div>
+    <div class="form-group">
+      <textarea th:utext="${board.content}" id="summernote" class="form-control" name="content" placeholder="내용"></textarea>
+    </div>
+    <script>
+      $('#summernote').summernote({
+        height: 400
+      });
+    </script>
+    <button type="submit" class="btn btn-primary">수정</button>
+  </form>
+</div>
+</body>
+</html>

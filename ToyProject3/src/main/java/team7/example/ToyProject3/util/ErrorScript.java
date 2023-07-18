@@ -1,6 +1,5 @@
 package team7.example.ToyProject3.util;
 
-
 public class ErrorScript {
 
     public static String alertBuild(String message) {

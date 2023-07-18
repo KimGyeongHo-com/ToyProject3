@@ -21,7 +21,7 @@
             <h3>댓글 작성</h3>
             <form method="post" id="parentReplyForm" th:action="@{/board/{boardId}/reply(boardId=${board.boardId})}">
                 <div class="mb-3">
-                    <textarea name="content" class="form-control" rows="3" required></textarea>
+                    <input name="content" class="form-control" maxlength="50" placeholder="댓글입력">
                 </div>
                 <button type="submit" class="btn btn-primary">댓글 작성</button>
             </form>
@@ -35,7 +35,7 @@
                 <li th:each="reply : ${replyList}">
                     <span th:text="${reply.content}"></span>
                     <span th:text="${reply.user.nickname}"></span>
-                    <span th:text="${reply.createdAt}"></span>
+                    <span th:text="${T(team7.example.ToyProject3.util.TimeFormatter).formatTime(reply.createdAt)}"></span>
                     <span th:if="${reply.user.id eq userId}">
                         <a th:href="@{/board/{boardId}/reply/{replyId}/(boardId=${reply.board.id}, replyId=${reply.id})}"
                            id= "deleteReplyBtn" class="delete-reply btn btn-danger">삭제</a>
@@ -45,7 +45,7 @@
                         <form method="post" class="childReplyForm"
                               th:action="@{/board/{boardId}/reply/{parentReplyId}(boardId=${reply.board.id}, parentReplyId=${reply.id})}">
                             <div class="mb-3">
-                                <textarea name="content" class="form-control" rows="3" required></textarea>
+                                <input name="content" class="form-control" maxlength="50" placeholder="댓글입력">
                             </div>
                             <button type="submit" class="btn btn-primary">댓글 작성</button>
                         </form>
@@ -54,7 +54,7 @@
                         <li th:each="child : ${reply.children}">
                             <span th:text="${child.content}"></span>
                             <span th:text="${child.user.nickname}"></span>
-                            <span th:text="${child.createdAt}"></span>
+                            <span th:text="${T(team7.example.ToyProject3.util.TimeFormatter).formatTime(child.createdAt)}"></span>
                             <span th:if="${child.user.id eq userId}">
                                 <a th:href="@{/board/{boardId}/nestedReply/{replyId}(boardId=${child.board.id}, replyId=${child.id})}"
                                    id= "deleteNestedReplyBtn" class="delete-nested-reply btn btn-danger">삭제</a>

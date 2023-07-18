@@ -17,7 +17,6 @@ import team7.example.ToyProject3.dto.board.BoardResponse;
 import team7.example.ToyProject3.dto.reply.ReplyResponseDto;
 import team7.example.ToyProject3.service.BoardService;
 import team7.example.ToyProject3.service.ReplyService;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

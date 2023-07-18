@@ -7,6 +7,7 @@ import team7.example.ToyProject3.dto.board.BoardRequest;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor

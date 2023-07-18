@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+	ENTITY_NOT_FOUND(HttpStatus.BAD_REQUEST, "요청하신 데이터가 없습니다."),
     ERROR_BIND_EXCEPTION(HttpStatus.BAD_REQUEST, ""),
     ERROR_BOARD_ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND, "없는 게시물 입니다."),
 

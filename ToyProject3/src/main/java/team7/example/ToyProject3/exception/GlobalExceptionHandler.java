@@ -41,6 +41,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(e.getErrorCode().getHttpStatus()).body(response);
     }
 
+    @ExceptionHandler(ReplyException.class)
+    public ResponseEntity<?> replyException(ReplyException e) {
+        String response = ErrorScript.alertBuild(e.getErrorCode().getDescription());
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus()).body(response);
+    }
+
     @ExceptionHandler(FileSizeLimitExceededException.class)
     public ResponseEntity<?> fileSizeLimitException(FileSizeLimitExceededException e) {
         String response = ErrorScript.alertBuild(e.getLocalizedMessage());

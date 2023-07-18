@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import team7.example.ToyProject3.domain.user.UserAdaptor;
 import team7.example.ToyProject3.dto.board.BoardRequest;
 import team7.example.ToyProject3.dto.board.BoardResponse;
+import team7.example.ToyProject3.dto.reply.ReplyResponseDto;
 import team7.example.ToyProject3.service.BoardService;
+import team7.example.ToyProject3.service.ReplyService;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -26,6 +29,7 @@ import javax.validation.Valid;
 public class BoardController {
 
     private final BoardService boardService;
+    private final ReplyService replyService;
 
     @PreAuthorize("permitAll()")
     @GetMapping( "/board")
@@ -59,11 +63,16 @@ public class BoardController {
 
     @GetMapping("/board/{boardId}")
     public String detail(
-            @PathVariable Long boardId,
-            Model model
+        @PathVariable Long boardId,
+        @AuthenticationPrincipal UserAdaptor userAdaptor,
+        Model model
     ) {
         BoardResponse.BoardDetailDTO board = boardService.getDetailBoard(boardId);
+        List<ReplyResponseDto> replyList = replyService.getAllReplyByBoard(boardId);
+        Long userId = userAdaptor.getUser().getId();
         model.addAttribute("board", board);
+        model.addAttribute("replyList", replyList);
+        model.addAttribute("userId", userId);
         return "/board/boardDetail";
     }
 

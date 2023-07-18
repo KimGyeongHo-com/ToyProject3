@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.*;
+import team7.example.ToyProject3.domain.board.Board;
+import team7.example.ToyProject3.domain.user.User;
+
 import javax.persistence.*;
 import org.hibernate.annotations.UpdateTimestamp;
 

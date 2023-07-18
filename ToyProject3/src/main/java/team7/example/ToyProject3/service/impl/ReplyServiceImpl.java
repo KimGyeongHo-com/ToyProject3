@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import team7.example.ToyProject3.domain.Board;
 import team7.example.ToyProject3.domain.Reply;
-import team7.example.ToyProject3.domain.User;
+import team7.example.ToyProject3.domain.board.Board;
+import team7.example.ToyProject3.domain.user.User;
 import team7.example.ToyProject3.dto.reply.ReplyRequestDto;
 import team7.example.ToyProject3.dto.reply.ReplyResponseDto;
 import team7.example.ToyProject3.exception.ErrorCode;

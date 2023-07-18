@@ -27,9 +27,15 @@
             <h5 class="card-title" th:text="${board.title}"></h5>
             <div>
                 <div>
-                    <button class="btn btn-danger" th:if="${#authentication.name} == ${board.userEmail}" th:onclick="|location.href='@{/board/delete/}' + ${board.boardId}|">삭제하기</button>
-                    <button class="btn btn-primary" th:if="${#authentication.name} == ${board.userEmail}" th:onclick="|location.href='@{/board/updateForm/}' + ${board.boardId}|">수정하기</button>
-                    <button class="btn btn-secondary" th:if="${#authorization.expr('isAuthenticated()')}" th:onclick="'getReportForm('+ ${board.boardId} +')'">신고하기</button>
+                    <button class="btn btn-danger" th:if="${#authentication.name} == ${board.userEmail}"
+                            th:onclick="|location.href='@{/board/delete/}' + ${board.boardId}|">삭제하기
+                    </button>
+                    <button class="btn btn-primary" th:if="${#authentication.name} == ${board.userEmail}"
+                            th:onclick="|location.href='@{/board/updateForm/}' + ${board.boardId}|">수정하기
+                    </button>
+                    <button class="btn btn-secondary" th:if="${#authorization.expr('isAuthenticated()')}"
+                            th:onclick="'getReportForm('+ ${board.boardId} +')'">신고하기
+                    </button>
                 </div>
             </div>
         </div>
@@ -45,7 +51,7 @@
             <h3>댓글 작성</h3>
             <form method="post" id="parentReplyForm" th:action="@{/board/{boardId}/reply(boardId=${board.boardId})}">
                 <div class="mb-3">
-                    <input name="content" class="form-control" maxlength="50" placeholder="댓글입력">
+                    <input name="content" class="form-control" maxlength="50" placeholder="댓글입력" required>
                 </div>
                 <button type="submit" class="btn btn-primary">댓글 작성</button>
             </form>
@@ -58,18 +64,17 @@
             <ul id="replyList">
                 <li th:each="reply : ${replyList}">
                     <span th:text="${reply.content}"></span>
-                    <span th:text="${reply.user.nickname}"></span>
+                    <span>작성자 : <span th:text="${reply.user.nickname}"></span></span>
                     <span th:text="${T(team7.example.ToyProject3.util.TimeFormatter).formatTime(reply.createdAt)}"></span>
-                    <span th:if="${reply.user.id eq userId}">
-                        <a th:href="@{/board/{boardId}/reply/{replyId}/(boardId=${reply.board.id}, replyId=${reply.id})}"
-                           id= "deleteReplyBtn" class="delete-reply btn btn-danger">삭제</a>
-                    </span>
+                    <a th:if="${#authentication.name} == ${reply.user.email}"
+                       th:href="@{/board/{boardId}/reply/{replyId}/(boardId=${reply.board.id}, replyId=${reply.id})}"
+                       id="deleteReplyBtn" class="delete-reply btn btn-danger">삭제</a>
                     <button class="btn btn-link showNestedReplyForm">답글</button>
                     <div class="col-md-12 nestedReplyFormWrapper" style="display: none;">
                         <form method="post" class="childReplyForm"
                               th:action="@{/board/{boardId}/reply/{parentReplyId}(boardId=${reply.board.id}, parentReplyId=${reply.id})}">
                             <div class="mb-3">
-                                <input name="content" class="form-control" maxlength="50" placeholder="댓글입력">
+                                <input name="content" class="form-control" maxlength="50" placeholder="댓글입력" required>
                             </div>
                             <button type="submit" class="btn btn-primary">댓글 작성</button>
                         </form>
@@ -77,12 +82,11 @@
                     <ul>
                         <li th:each="child : ${reply.children}">
                             <span th:text="${child.content}"></span>
-                            <span th:text="${child.user.nickname}"></span>
+                            <span>작성자 : <span th:text="${child.user.nickname}"></span></span>
                             <span th:text="${T(team7.example.ToyProject3.util.TimeFormatter).formatTime(child.createdAt)}"></span>
-                            <span th:if="${child.user.id eq userId}">
-                                <a th:href="@{/board/{boardId}/nestedReply/{replyId}(boardId=${child.board.id}, replyId=${child.id})}"
-                                   id= "deleteNestedReplyBtn" class="delete-nested-reply btn btn-danger">삭제</a>
-                            </span>
+                            <a th:if="${#authentication.name} == ${child.user.email}"
+                               th:href="@{/board/{boardId}/nestedReply/{replyId}(boardId=${child.board.id}, replyId=${child.id})}"
+                               id="deleteNestedReplyBtn" class="delete-nested-reply btn btn-danger">삭제</a>
                         </li>
                     </ul>
                 </li>
@@ -152,7 +156,5 @@
 
     });
 </script>
-
-
 </div>
 </body>

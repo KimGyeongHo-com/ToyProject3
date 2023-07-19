@@ -14,9 +14,9 @@ public class BoardResponse {
     public static class BoardListDTO {
         private Long boardId;
         private String title;
-        private String content;
         private String nickName;
         private String thumbnail;
+        private String thumbnailContent;
         private BoardStatus boardStatus;
     }
 
@@ -30,7 +30,7 @@ public class BoardResponse {
         private String userEmail;
         // TODO 댓글 추가 필요
 
-        public static BoardResponse.BoardDetailDTO toDTO(Board board) {
+        public static BoardDetailDTO toDTO(Board board) {
             return BoardDetailDTO.builder()
                     .boardId(board.getId())
                     .title(board.getTitle())
@@ -48,7 +48,7 @@ public class BoardResponse {
         private String title;
         private String content;
 
-        public static BoardResponse.BoardUpdateDTO toDTO(Board board) {
+        public static BoardUpdateDTO toDTO(Board board) {
             return BoardUpdateDTO.builder()
                     .boardId(board.getId())
                     .title(board.getTitle())

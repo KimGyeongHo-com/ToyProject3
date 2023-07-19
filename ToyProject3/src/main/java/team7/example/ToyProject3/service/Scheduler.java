@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import team7.example.ToyProject3.domain.user.User;
@@ -16,6 +17,7 @@ public class Scheduler {
 
 	private final UserRepository userRepository;
 
+	@Transactional
 	@Scheduled(fixedDelay = 60000)
 	public void changeUserRole() {
 

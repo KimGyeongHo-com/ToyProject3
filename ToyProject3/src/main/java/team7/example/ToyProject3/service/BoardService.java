@@ -1,10 +1,14 @@
 package team7.example.ToyProject3.service;
 
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import team7.example.ToyProject3.domain.Reply;
 import team7.example.ToyProject3.domain.user.User;
 import team7.example.ToyProject3.domain.board.Board;
 import team7.example.ToyProject3.domain.board.BoardStatus;
@@ -24,6 +28,8 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final ReplyRepository replyRepository;
+
 
     // TODO 왜 예외 처리를 안해도 되는지 체크
     //  1. user 의 정보는 security 를 통해 확실 user 를 가져온다.
@@ -70,6 +76,10 @@ public class BoardService {
     public void deleteBoard(Long boardId, User user) {
         Board board = boardRepository.findBoardByIdAndUserId(boardId, user.getId())
                 .orElseThrow(() -> new BoardException(ErrorCode.ERROR_BOARD_ENTITY_NOT_FOUND));
+
+        List<Reply> comments = replyRepository.findByBoardId(boardId);
+        replyRepository.deleteAll(comments);
+
         boardRepository.deleteById(board.getId());
     }
 

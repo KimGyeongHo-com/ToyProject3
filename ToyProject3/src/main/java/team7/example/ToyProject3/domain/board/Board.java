@@ -1,13 +1,15 @@
 package team7.example.ToyProject3.domain.board;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import team7.example.ToyProject3.domain.user.User;
 import team7.example.ToyProject3.dto.board.BoardRequest;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -28,6 +30,9 @@ public class Board {
 
     @Lob
     private String thumbnail;
+
+    @Column(length = 300)
+    private String thumbnailContent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

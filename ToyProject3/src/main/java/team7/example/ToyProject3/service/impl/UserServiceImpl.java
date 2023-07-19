@@ -25,7 +25,7 @@ import java.util.*;
 
 @Service
 @AllArgsConstructor
-public class UerServiceImpl  implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService, UserDetailsService {
     private final HttpSession session;
     private final UserRepository userRepository;
 

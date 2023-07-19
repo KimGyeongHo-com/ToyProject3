@@ -16,6 +16,7 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
 	@Query("SELECT r FROM Reply r LEFT JOIN r.parentReply parentReply WHERE r.board.id = :boardId ORDER BY CASE WHEN parentReply IS NULL THEN r.id ELSE parentReply.id END DESC, r.createdAt ASC")
 	List<Reply> findAllByBoardIdOrderByParentAndCreatedAt(Long boardId);
 
+	List<Reply> findByBoardId(Long boardId);
 
 
 }

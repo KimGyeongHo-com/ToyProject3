@@ -64,15 +64,12 @@ public class BoardController {
     @GetMapping("/board/{boardId}")
     public String detail(
         @PathVariable Long boardId,
-        @AuthenticationPrincipal UserAdaptor userAdaptor,
         Model model
     ) {
         BoardResponse.BoardDetailDTO board = boardService.getDetailBoard(boardId);
         List<ReplyResponseDto> replyList = replyService.getAllReplyByBoard(boardId);
-        Long userId = userAdaptor.getUser().getId();
         model.addAttribute("board", board);
         model.addAttribute("replyList", replyList);
-        model.addAttribute("userId", userId);
         return "/board/boardDetail";
     }
 

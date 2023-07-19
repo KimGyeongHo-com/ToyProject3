@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team7.example.ToyProject3.domain.Board;
 import team7.example.ToyProject3.domain.Reply;
-import team7.example.ToyProject3.domain.User;
+import team7.example.ToyProject3.domain.board.Board;
+import team7.example.ToyProject3.domain.user.User;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

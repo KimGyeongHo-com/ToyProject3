@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
-import team7.example.ToyProject3.domain.UserAdaptor;
+import team7.example.ToyProject3.domain.user.UserAdaptor;
 import team7.example.ToyProject3.dto.reply.ReplyRequestDto;
 import team7.example.ToyProject3.service.ReplyService;
 
@@ -21,7 +21,7 @@ public class ReplyController {
 	private final ReplyService replyService;
 
 	@PostMapping("/{boardId}/reply")
-	public String addReply(ReplyRequestDto.ReplyDto saveReplyDto,
+	public String addReply(@Valid ReplyRequestDto.ReplyDto saveReplyDto,
 		@AuthenticationPrincipal UserAdaptor userAdaptor) {
 		replyService.addReply(saveReplyDto, userAdaptor.getUser());
 		return "redirect:/board/{boardId}";
@@ -36,7 +36,7 @@ public class ReplyController {
 
 	@PostMapping("/{boardId}/reply/{parentReplyId}")
 	public String addNestedReply(
-		ReplyRequestDto.NestedReplyDto saveNestedReplyDto,
+		@Valid ReplyRequestDto.NestedReplyDto saveNestedReplyDto,
 		@AuthenticationPrincipal UserAdaptor userAdaptor) {
 		replyService.addNestedReply(saveNestedReplyDto, userAdaptor.getUser());
 		return "redirect:/board/{boardId}";

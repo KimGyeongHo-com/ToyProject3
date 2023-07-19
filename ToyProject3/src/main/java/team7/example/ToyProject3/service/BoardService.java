@@ -14,6 +14,8 @@ import team7.example.ToyProject3.dto.board.BoardResponse;
 import team7.example.ToyProject3.exception.BoardException;
 import team7.example.ToyProject3.exception.ErrorCode;
 import team7.example.ToyProject3.repository.BoardRepository;
+import team7.example.ToyProject3.repository.ReplyRepository;
+import team7.example.ToyProject3.repository.UserRepository;
 import team7.example.ToyProject3.util.BoardContentParseUtil;
 
 @RequiredArgsConstructor
@@ -21,12 +23,16 @@ import team7.example.ToyProject3.util.BoardContentParseUtil;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void savaBoard(BoardRequest.saveBoardDTO saveBoardDTO, User user) {
         BoardRequest.saveBoardDTO parseBoard = BoardContentParseUtil.parse(saveBoardDTO);
         Board board = parseBoard.toEntity(user);
+        user.plusBoard();
+        userRepository.save(user);
         boardRepository.save(board);
+
     }
 
     @Transactional(readOnly = true)

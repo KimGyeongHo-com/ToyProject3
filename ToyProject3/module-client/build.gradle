@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group 'team7.module'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar.enabled = false

@@ -10,6 +10,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/ToyProject3" />
+            <option value="$PROJECT_DIR$/ToyProject3/module-admin" />
+            <option value="$PROJECT_DIR$/ToyProject3/module-client" />
+            <option value="$PROJECT_DIR$/ToyProject3/module-core" />
           </set>
         </option>
       </GradleProjectSettings>

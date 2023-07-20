@@ -1,1 +1,5 @@
 rootProject.name = 'ToyProject3'
+include 'module-core'
+include 'module-client'
+include 'module-admin'
+

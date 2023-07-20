@@ -11,9 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import team7.example.ToyProject3.service.OAuth2GoogleService;
 import team7.example.ToyProject3.service.UserService;
+import team7.example.ToyProject3.service.impl.OAuth2GoogleServiceImpl;
+
 
 
 @Configuration
@@ -22,7 +27,7 @@ import team7.example.ToyProject3.service.UserService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
-    private final OAuth2GoogleService oAuth2GoogleService;
+    private final OAuth2UserService oAuth2GoogleService;
 
     // 비밀번호 암호화 : 스프링 시큐리티에서 제공하는 비밀번호 암호화 객체
     // Service에서 비밀번호를 암호화 할 수 있도록 Bean으로 등록.

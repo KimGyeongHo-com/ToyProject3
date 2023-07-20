@@ -68,7 +68,8 @@
             <div class="list-group mb-4">
                 <a href="/board?boardType=sprout" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">새싹 게시판</a>
                 <a href="/board?boardType=great" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">우수 게시판</a>
-                <a th:if="${#authorization.expr('isAuthenticated()')}" href="/saveForm" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark"> 글쓰기</a>
+                <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/saveForm}" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">글쓰기</a>
+                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/saveForm}" class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">글쓰기</a>
             </div>
         </div>
 

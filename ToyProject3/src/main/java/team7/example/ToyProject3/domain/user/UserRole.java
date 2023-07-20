@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum UserRole {
     NORMAL("NORMAL"),
     VIP("VIP"),
-    BLACK("BLACKLIST");
+    BLACK("BLACK");
 
     private String value;
 }

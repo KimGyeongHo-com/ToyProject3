@@ -98,7 +98,7 @@ public class UserController {
             UserDetails userDetails = userService.loadUserByUsername(user.get().getEmail());
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return "/board";
+            return "/index";
         }
 
         // 6. 등록되지 않은 회원이면 회원가입 후 로그인 처리
@@ -125,7 +125,7 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
-            return "/board";
+            return "/index";
         }
 
         return null;

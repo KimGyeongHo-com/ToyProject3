@@ -19,6 +19,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class OAuth2GoogleServiceImpl extends DefaultOAuth2UserService implements OAuth2GoogleService {
+
     private final UserRepository userRepository;
     private final UserService userService;
 

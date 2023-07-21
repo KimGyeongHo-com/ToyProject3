@@ -192,7 +192,7 @@ public class UserController {
     // 어드민 페이지
     @GetMapping("/admin")
     public String dispAdmin() {
-        return "/admin";
+        return "admin";
     }
 
 

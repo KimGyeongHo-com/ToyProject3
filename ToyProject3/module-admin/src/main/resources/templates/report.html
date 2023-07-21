@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>신고된 게시글 목록</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <style>
+    .report-image {
+      width: 200px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+<h1>신고된 게시글 목록</h1>
+<table class="table">
+  <thead>
+  <tr>
+    <th>신고 사진</th>
+    <th>게시글 제목</th>
+    <th>신고 사유</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="report : ${reports}">
+    <td>
+      <img th:src="@{'/images' + '?path=' + ${report.filePath}}" class="report-image">
+    </td>
+    <td th:text="${report.title}"></td>
+    <td th:text="${report.description}"></td>
+    <td>
+      <form th:action="@{/report/__${report.id}__/update}" method="post" onsubmit="return confirmUpdate();">
+        <button type="submit">승인</button>
+      </form>
+      <form th:action="@{/report/__${report.id}__/delete}" method="post" onsubmit="return confirmDelete();">
+        <button type="submit">거절</button>
+      </form>
+      <form th:action="@{/report/__${report.id}__/Unblacklist}" method="post" onsubmit="return Unblacklist();">
+        <button type="submit">블랙리스트 해제</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<script>
+  function confirmUpdate() {
+    return confirm("등록 하시겠습니까?");
+  }
+  function confirmDelete() {
+    return confirm("거절 하시겠습니까?");
+  }
+  function Unblacklist() {
+    return confirm("블랙리스트를 해제 하시겠습니까?");
+  }
+</script>
+</body>
+</html>

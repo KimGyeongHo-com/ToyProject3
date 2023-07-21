@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>유저 리스트</title>
+</head>
+<body>
+<h1>유저 리스트</h1>
+<button onclick="sortByBoard()">게시글 수 정렬</button>
+<button onclick="sortByReply()">댓글 수 정렬</button>
+<table>
+    <tr>
+        <th>이름</th>
+        <th>Nickname</th>
+        <th>Email</th>
+        <th>등급</th>
+        <th>게시글 수</th>
+        <th>댓글 수</th>
+        <th>등급 변경</th>
+    </tr>
+    <th:block th:each="user : ${users}">
+        <tr>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.nickname}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.userrole}"></td>
+            <td th:text="${user.qtyOfBoard}"></td>
+            <td th:text="${user.qtyOfReply}"></td>
+            <td>
+                <form th:action="@{/users/{id}/userrole(id=${user.id})}" method="post">
+                    <select name="userrole">
+                        <option value="NORMAL">NORMAL</option>
+                        <option value="VIP">VIP</option>
+                    </select>
+                    <button type="submit">Update UserRole</button>
+                </form>
+            </td>
+        </tr>
+    </th:block>
+</table>
+<script>
+    function sortByBoard() {
+        window.location.href = "/users/orderByBoard";
+    }
+    function sortByReply() {
+        window.location.href = "/users/orderByReply";
+    }
+</script>
+</body>
+</html>

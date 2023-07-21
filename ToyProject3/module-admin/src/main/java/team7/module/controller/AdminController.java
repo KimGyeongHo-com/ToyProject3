@@ -82,9 +82,7 @@ public class AdminController {
     @PostMapping("/boardList/{id}/delete")
     public String deleteBoard(@PathVariable(name = "id") Long id) {
 
-        adminService.deleteRepliesByBoardId(id);
-
-        adminService.deleteBoardById(id);
+        adminService.updateBoardStatusReport(id, BoardStatus.DISABLED);
 
         return "redirect:/userboard";
     }

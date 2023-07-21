@@ -180,7 +180,8 @@ public class UserController {
     // 내 정보 페이지
     @GetMapping("/info")
     public String dispMyInfo(Model model, @AuthenticationPrincipal UserAdaptor userAdaptor) {
-        User user = userAdaptor.getUser();
+        String email = userAdaptor.getUsername();
+        User user = userRepository.findByEmail(email).orElse(null);
         model.addAttribute("name",user.getName());
         model.addAttribute("email", user.getEmail());
         model.addAttribute("role",user.getRole());

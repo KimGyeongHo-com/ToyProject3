@@ -108,6 +108,7 @@ public class AdminController {
     @PostMapping("/report/{id}/update")
     public String updateReportBlackById(@PathVariable Long id) {
         adminService.updateReportBlackById(id, Role.BLACKLIST, UserRole.BLACK);
+        adminService.updateBoardStatusReport(id, BoardStatus.DISABLED);
         return "redirect:/report";
     }
 

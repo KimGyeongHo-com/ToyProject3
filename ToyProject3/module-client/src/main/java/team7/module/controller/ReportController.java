@@ -1,16 +1,18 @@
 package team7.module.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import team7.module.domain.user.UserAdaptor;
 import team7.module.dto.report.ReportRequest;
 import team7.module.service.ReportService;
+
+import java.net.MalformedURLException;
 
 
 @PreAuthorize("isAuthenticated()")
@@ -37,6 +39,12 @@ public class ReportController {
             ReportRequest.reportBoardDTO reportBoardDTO
     ) {
         reportService.report(boardId, userAdaptor.getUser(), reportBoardDTO);
-        return "/board/boardReportForm";
+        return "redirect:/board";
+    }
+
+    @ResponseBody
+    @GetMapping("/images")
+    public Resource image(@RequestParam("path") String filePath) throws MalformedURLException {
+        return new UrlResource("file:" + filePath);
     }
 }

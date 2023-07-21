@@ -25,7 +25,7 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final BoardRepository boardRepository;
 
-//    @Value("${my.fileDir}")
+    @Value("${my.fileDir}")
     private String storePath;
 
     public void report(Long boardId, User user, ReportRequest.reportBoardDTO reportBoardDTO) {

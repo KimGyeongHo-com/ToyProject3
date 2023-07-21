@@ -2,6 +2,7 @@ package team7.module.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import team7.module.domain.board.BoardStatus;
 import team7.module.domain.user.Role;
 import team7.module.domain.user.User;
@@ -13,7 +14,7 @@ import team7.module.dto.AllUsersInfoDto;
 import java.util.List;
 
 
-//@Repository
+@Repository
 @Mapper
 public interface AdminRepository {
 
@@ -46,6 +47,8 @@ public interface AdminRepository {
     void deleteReportByBoardId(Long id);
 
     void updateBlacklistByBoardId(Long id, Role role, UserRole userRole);
+
+    void updateBoardStatusReport(Long id, BoardStatus boardStatus);
 
 
 }

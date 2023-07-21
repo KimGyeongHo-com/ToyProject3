@@ -65,7 +65,7 @@
                 <li th:each="reply : ${replyList}">
                     <span th:text="${reply.content}"></span>
                     <span>작성자 : <span th:text="${reply.user.nickname}"></span></span>
-                    <span th:text="${T(team7.example.ToyProject3.util.TimeFormatter).formatTime(reply.createdAt)}"></span>
+                    <span th:text="${T(team7.module.util.TimeFormatter).formatTime(reply.createdAt)}"></span>
                     <a th:if="${#authentication.name} == ${reply.user.email}"
                        th:href="@{/board/{boardId}/reply/{replyId}/(boardId=${reply.board.id}, replyId=${reply.id})}"
                        id="deleteReplyBtn" class="delete-reply btn btn-danger">삭제</a>

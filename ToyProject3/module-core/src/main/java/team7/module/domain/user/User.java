@@ -23,8 +23,10 @@ public class User {
 	@Column(length = 30, nullable = false, name = "email")
 	private String email;
 
+	@Enumerated(EnumType.STRING)
 	private Role role;
 
+	@Enumerated(EnumType.STRING)
 	private UserRole userRole;
 
 	private String nickname;

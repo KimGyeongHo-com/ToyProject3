@@ -141,4 +141,13 @@ public class AdminService {
         }
     }
 
+    public void updateBoardStatusReport(Long id, BoardStatus boardStatus) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            AdminRepository adminRepository = sqlSession.getMapper(AdminRepository.class);
+            adminRepository.updateBoardStatusReport(id, boardStatus);
+            sqlSession.commit();
+        }
+    }
+
+
 }
